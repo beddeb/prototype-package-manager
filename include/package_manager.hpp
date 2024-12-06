@@ -28,11 +28,9 @@ public:
         if (installed_packages.contains(package)) {
             throw std::runtime_error("Package already installed");
         }
-
         if (!checkDependencies(package)) {
             throw std::runtime_error("Dependencies not satisfied");
         }
-
         for (const auto& installed_pair : installed_packages) {
             if (installed_pair.first.name == package.name &&
                 installed_pair.first.version < package.version) {
@@ -40,7 +38,6 @@ public:
                 break;
             }
         }
-
         installed_packages.add(package);
     }
 
@@ -52,7 +49,6 @@ public:
                 }
             }
         }
-
         installed_packages.remove(package);
     }
 
