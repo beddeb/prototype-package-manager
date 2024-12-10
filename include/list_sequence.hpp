@@ -4,37 +4,39 @@
 #include <utility>
 #include "sequence.hpp"
 
+
 template<typename T>
 class ListSequence : public Sequence<T> {
 private:
     struct Node {
         T data;
-        Node* next;
+        Node *next;
 
-        explicit Node(const T& data) : data(data), next(nullptr) {}
+        explicit Node(const T &data) : data(data), next(nullptr) {}
     };
 
-    Node* head;
-    Node* tail;
+    Node *head;
+    Node *tail;
 
 public:
     ListSequence() : head(nullptr), tail(nullptr) {
         Sequence<T>::size = 0;
     }
 
-    ListSequence(const ListSequence& other) : Sequence<T>(other.getSize()) {
+    ListSequence(const ListSequence &other) : Sequence<T>(other.getSize()) {
         head = nullptr;
         tail = nullptr;
-        Node* current = other.head;
+        Node *current = other.head;
         while (current) {
             add(current->data);
             current = current->next;
         }
     }
 
-    ListSequence(ListSequence&& other) noexcept : Sequence<T>(other.getSize()) {
-        head = other.head;
-        tail = other.tail;
+    ListSequence(ListSequence &&other) noexcept
+            : Sequence<T>(std::move(other)),
+              head(other.head),
+              tail(other.tail) {
         other.head = nullptr;
         other.tail = nullptr;
     }
@@ -43,8 +45,8 @@ public:
         clear();
     }
 
-    void add(const T& element) override {
-        Node* newNode = new Node(element);
+    void add(const T &element) override {
+        Node *newNode = new Node(element);
         if (!head) {
             head = tail = newNode;
         } else {
@@ -59,7 +61,7 @@ public:
             throw std::out_of_range("Index out of range");
         }
 
-        Node* current = head;
+        Node *current = head;
         if (index == 0) {
             head = head->next;
             delete current;
@@ -67,7 +69,7 @@ public:
                 tail = nullptr;
             }
         } else {
-            Node* prev = nullptr;
+            Node *prev = nullptr;
             for (size_t i = 0; i < index; ++i) {
                 prev = current;
                 current = current->next;
@@ -81,24 +83,24 @@ public:
         Sequence<T>::size--;
     }
 
-    T& get(size_t index) override {
+    T &get(size_t index) override {
         if (index >= Sequence<T>::size) {
             throw std::out_of_range("Index out of range");
         }
 
-        Node* current = head;
+        Node *current = head;
         for (size_t i = 0; i < index; ++i) {
             current = current->next;
         }
         return current->data;
     }
 
-    const T& get(size_t index) const override {
+    const T &get(size_t index) const override {
         if (index >= Sequence<T>::size) {
             throw std::out_of_range("Index out of range");
         }
 
-        Node* current = head;
+        Node *current = head;
         for (size_t i = 0; i < index; ++i) {
             current = current->next;
         }
@@ -107,7 +109,7 @@ public:
 
     void clear() {
         while (head) {
-            Node* temp = head;
+            Node *temp = head;
             head = head->next;
             delete temp;
         }
@@ -115,10 +117,10 @@ public:
         Sequence<T>::size = 0;
     }
 
-    ListSequence& operator=(const ListSequence& other) {
+    ListSequence &operator=(const ListSequence &other) {
         if (this != &other) {
             clear();
-            Node* current = other.head;
+            Node *current = other.head;
             while (current) {
                 add(current->data);
                 current = current->next;
@@ -127,7 +129,7 @@ public:
         return *this;
     }
 
-    ListSequence& operator=(ListSequence&& other) noexcept {
+    ListSequence &operator=(ListSequence &&other) noexcept {
         if (this != &other) {
             clear();
             head = other.head;
@@ -139,18 +141,39 @@ public:
         return *this;
     }
 
+    bool operator==(const ListSequence& other) const {
+        if (this->getSize() != other.getSize()) {
+            return false;
+        }
+        Node* current1 = this->head;
+        Node* current2 = other.head;
+
+        while (current1 && current2) {
+            if (current1->data != current2->data) {
+                return false;
+            }
+            current1 = current1->next;
+            current2 = current2->next;
+        }
+        return true;
+    }
+
+    bool operator!=(const ListSequence& other) const {
+        return !(*this == other);
+    }
+
     class ListIterator {
     private:
-        Node* current;
+        Node *current;
 
     public:
-        explicit ListIterator(Node* node) : current(node) {}
+        explicit ListIterator(Node *node) : current(node) {}
 
-        T& operator*() const {
+        T &operator*() const {
             return current->data;
         }
 
-        ListIterator& operator++() {
+        ListIterator &operator++() {
             current = current->next;
             return *this;
         }
@@ -161,11 +184,11 @@ public:
             return temp;
         }
 
-        bool operator==(const ListIterator& other) const {
+        bool operator==(const ListIterator &other) const {
             return current == other.current;
         }
 
-        bool operator!=(const ListIterator& other) const {
+        bool operator!=(const ListIterator &other) const {
             return !(*this == other);
         }
     };
@@ -180,16 +203,16 @@ public:
 
     class ConstListIterator {
     private:
-        const Node* current;
+        const Node *current;
 
     public:
-        explicit ConstListIterator(const Node* node) : current(node) {}
+        explicit ConstListIterator(const Node *node) : current(node) {}
 
-        const T& operator*() const {
+        const T &operator*() const {
             return current->data;
         }
 
-        ConstListIterator& operator++() {
+        ConstListIterator &operator++() {
             current = current->next;
             return *this;
         }
@@ -200,11 +223,11 @@ public:
             return temp;
         }
 
-        bool operator==(const ConstListIterator& other) const {
+        bool operator==(const ConstListIterator &other) const {
             return current == other.current;
         }
 
-        bool operator!=(const ConstListIterator& other) const {
+        bool operator!=(const ConstListIterator &other) const {
             return !(*this == other);
         }
     };

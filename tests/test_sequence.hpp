@@ -3,28 +3,28 @@
 #include "../include/sequence.hpp"
 
 
-void testAddElement();
+void testAddElementS();
 
-void testAddMultipleElements();
+void testAddMultipleElementsS();
 
-void testRemoveElement();
+void testRemoveElementS();
 
-void testRemoveOutOfRange();
+void testRemoveOutOfRangeS();
 
-void testGetOutOfRange();
+void testGetOutOfRangeS();
 
-void testCopyConstructor();
+void testCopyConstructorS();
 
-void testMoveConstructor();
+void testMoveConstructorS();
 
-void testAssignmentOperator();
+void testAssignmentOperatorS();
 
-void testSelfAssignment();
+void testSelfAssignmentS();
 
-void testEqualityOperator();
+void testEqualityOperatorS();
 
-void testInequalityOperator();
+void testInequalityOperatorS();
 
-void testResize();
+void testResizeS();
 
 void testSequence();

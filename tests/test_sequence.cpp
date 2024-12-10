@@ -3,14 +3,14 @@
 #include "test_sequence.hpp"
 
 
-void testAddElement() {
+void testAddElementS() {
     Sequence<int> seq;
     seq.add(10);
     assert(("AddElement_size", seq.getSize() == 1));
     assert(("AddElement_value", seq.get(0) == 10));
 }
 
-void testAddMultipleElements() {
+void testAddMultipleElementsS() {
     Sequence<int> seq;
     seq.add(10);
     seq.add(20);
@@ -21,7 +21,7 @@ void testAddMultipleElements() {
     assert(("AddMultipleElements_value_2", seq.get(2) == 30));
 }
 
-void testRemoveElement() {
+void testRemoveElementS() {
     Sequence<int> seq;
     seq.add(10);
     seq.add(20);
@@ -32,7 +32,7 @@ void testRemoveElement() {
     assert(("RemoveElement_value_1", seq.get(1) == 30));
 }
 
-void testRemoveOutOfRange() {
+void testRemoveOutOfRangeS() {
     Sequence<int> seq;
     seq.add(10);
     seq.add(20);
@@ -44,7 +44,7 @@ void testRemoveOutOfRange() {
     }
 }
 
-void testGetOutOfRange() {
+void testGetOutOfRangeS() {
     Sequence<int> seq;
     seq.add(10);
     try {
@@ -55,7 +55,7 @@ void testGetOutOfRange() {
     }
 }
 
-void testCopyConstructor() {
+void testCopyConstructorS() {
     Sequence<int> seq;
     seq.add(10);
     seq.add(20);
@@ -65,7 +65,7 @@ void testCopyConstructor() {
     assert(("CopyConstructor_value_1", copy.get(1) == 20));
 }
 
-void testMoveConstructor() {
+void testMoveConstructorS() {
     Sequence<int> seq;
     seq.add(10);
     seq.add(20);
@@ -76,7 +76,7 @@ void testMoveConstructor() {
     assert(("MoveConstructor_size_1", seq.getSize() == 0));
 }
 
-void testAssignmentOperator() {
+void testAssignmentOperatorS() {
     Sequence<int> seq;
     seq.add(10);
     seq.add(20);
@@ -87,7 +87,7 @@ void testAssignmentOperator() {
     assert(("SelfAssignment_value_1", copy.get(1) == 20));
 }
 
-void testSelfAssignment() {
+void testSelfAssignmentS() {
     Sequence<int> seq;
     seq.add(10);
     seq = seq;
@@ -95,7 +95,7 @@ void testSelfAssignment() {
     assert(("SelfAssignment_value", seq.get(0) == 10));
 }
 
-void testEqualityOperator() {
+void testEqualityOperatorS() {
     Sequence<int> seq1;
     seq1.add(10);
     seq1.add(20);
@@ -107,7 +107,7 @@ void testEqualityOperator() {
     assert(("EqualityOperator", seq1 == seq2));
 }
 
-void testInequalityOperator() {
+void testInequalityOperatorS() {
     Sequence<int> seq1;
     seq1.add(10);
 
@@ -117,7 +117,7 @@ void testInequalityOperator() {
     assert(("InequalityOperator", seq1 != seq2));
 }
 
-void testResize() {
+void testResizeS() {
     Sequence<int> seq;
     for (int i = 0; i < 10; ++i) {
         seq.add(i);
@@ -129,17 +129,18 @@ void testResize() {
 }
 
 void testSequence() {
-    testAddElement();
-    testAddMultipleElements();
-    testRemoveElement();
-    testRemoveOutOfRange();
-    testGetOutOfRange();
-    testCopyConstructor();
-    testMoveConstructor();
-    testAssignmentOperator();
-    testSelfAssignment();
-    testEqualityOperator();
-    testInequalityOperator();
-    testResize();
-    std::cout << "All tests passed!" << std::endl;
+    testAddElementS();
+    testAddMultipleElementsS();
+    testRemoveElementS();
+    testRemoveOutOfRangeS();
+    testGetOutOfRangeS();
+    testCopyConstructorS();
+    testMoveConstructorS();
+    testAssignmentOperatorS();
+    testSelfAssignmentS();
+    testEqualityOperatorS();
+    testInequalityOperatorS();
+    testResizeS();
+
+    std::cout << "All tests passed! (Sequence)" << std::endl;
 }
