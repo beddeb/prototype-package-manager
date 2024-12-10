@@ -7,4 +7,5 @@ add_executable(lab3 main.cpp
         src/package_manager.cpp
 
         tests/test_sequence.cpp
-        tests/test_list_sequence.cpp)
+        tests/test_list_sequence.cpp
+        tests/test_array_sequence.cpp)

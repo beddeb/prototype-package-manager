@@ -4,7 +4,6 @@
 #include <utility>
 #include "sequence.hpp"
 
-
 template<typename T>
 class ArraySequence : public Sequence<T> {
 private:
@@ -13,16 +12,21 @@ private:
 public:
     explicit ArraySequence(size_t size = 0) : Sequence<T>(size), data(new T[size]) {}
 
-    ArraySequence(const ArraySequence& other) : Sequence<T>(other.getSize()) {
-        data = new T[Sequence<T>::capacity];
-        for (size_t i = 0; i < Sequence<T>::size; ++i) {
+    ArraySequence(const ArraySequence& other) : Sequence<T>(other.size), data(new T[other.capacity]) {
+        for (size_t i = 0; i < other.size; ++i) {
             data[i] = other.data[i];
         }
+        Sequence<T>::size = other.size;
+        Sequence<T>::capacity = other.capacity;
     }
 
-    ArraySequence(ArraySequence&& other) noexcept : Sequence<T>(other.getSize()) {
-        data = other.data;
+    ArraySequence(ArraySequence&& other) noexcept
+            : Sequence<T>(other.size), data(other.data) {
+        Sequence<T>::size = other.size;
+        Sequence<T>::size = other.capacity;
         other.data = nullptr;
+        other.size = 0;
+        other.capacity = 0;
     }
 
     ~ArraySequence() {
@@ -68,10 +72,12 @@ public:
 
     ArraySequence& operator=(const ArraySequence& other) {
         if (this != &other) {
-            Sequence<T>::size = other.Sequence<T>::size;
             delete[] data;
-            data = new T[Sequence<T>::capacity];
-            for (size_t i = 0; i < Sequence<T>::size; ++i) {
+
+            Sequence<T>::size = other.size;
+            Sequence<T>::capacity = other.capacity;
+            data = new T[other.capacity];
+            for (size_t i = 0; i < other.size; ++i) {
                 data[i] = other.data[i];
             }
         }
@@ -80,10 +86,34 @@ public:
 
     ArraySequence& operator=(ArraySequence&& other) noexcept {
         if (this != &other) {
-            std::swap(data, other.data);
-            Sequence<T>::size = other.Sequence<T>::size;
+            delete[] data;
+
+            data = other.data;
+            Sequence<T>::size = other.size;
+            Sequence<T>::capacity = other.capacity;
+
+            other.data = nullptr;
+            other.size = 0;
+            other.capacity = 0;
         }
         return *this;
+    }
+
+    bool operator==(const ArraySequence& other) const {
+        if (this->size != other.size) {
+            return false;
+        }
+        for (size_t i = 0; i < this->size; ++i) {
+            if (data[i] != other.data[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Оператор неравенства
+    bool operator!=(const ArraySequence& other) const {
+        return !(*this == other);
     }
 
     Iterator<T> begin() {

@@ -59,7 +59,7 @@ void processCommand(PackageManager& pm) {
             std::cout << "Package '" << packageName << "' not found.\n";
         }
     } else if (command == "exit") {
-        // Выход из программы
+        exit(0);
         return;
     } else if (command == "help") {
         std::cout << "Available commands:\n"
