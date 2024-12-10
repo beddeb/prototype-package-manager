@@ -10,44 +10,44 @@ private:
     size_t bucketIndex;
     size_t nodeIndex;
 
-    // Метод поиска следующего валидного элемента (с учетом того, что итератор может "выйти" за границу)
     void findNextValid() {
         while (bucketIndex < hashTable->capacity) {
             while (nodeIndex < hashTable->table.get(bucketIndex).getSize()) {
                 if (hashTable->table.get(bucketIndex).get(nodeIndex).isOccupied) {
-                    return;  // Нашли валидный элемент, выходим
+                    return;
                 }
                 ++nodeIndex;
             }
             ++bucketIndex;
-            nodeIndex = 0; // Начинаем с начала следующей цепочки
+            nodeIndex = 0;
         }
-        // Если дошли до конца, bucketIndex будет равен hashTable->capacity
     }
 
 public:
+    static HashTableIterator end(HashTable<K, V>* table) {
+        return HashTableIterator(table, table->capacity, 0);
+    }
+
     using value_type = const K&;
 
     explicit HashTableIterator(HashTable<K, V>* table, size_t bucket = 0, size_t node = 0)
             : hashTable(table), bucketIndex(bucket), nodeIndex(node) {
-        if (hashTable) {
-            findNextValid(); // Находим первый валидный элемент при создании
+        if (!hashTable) {
+            throw std::runtime_error("HashTable is NULL");
         }
+        findNextValid();
     }
 
     value_type operator*() const {
-        // Проверка, что итератор валиден (не указывает за пределы хеш-таблицы)
-        if(bucketIndex >= hashTable->capacity) {
+        if (bucketIndex >= hashTable->capacity) {
             throw std::runtime_error("Iterator is out of range");
         }
         return hashTable->table.get(bucketIndex).get(nodeIndex).key;
     }
 
     HashTableIterator& operator++() {
-        if (hashTable) {
-            ++nodeIndex;
-            findNextValid();
-        }
+        ++nodeIndex;
+        findNextValid();
         return *this;
     }
 
@@ -58,7 +58,6 @@ public:
     }
 
     bool operator==(const HashTableIterator& other) const {
-        // Сравниваем итераторы, учитывая что end итератор будет валидным
         return hashTable == other.hashTable &&
                bucketIndex == other.bucketIndex &&
                nodeIndex == other.nodeIndex;
@@ -80,39 +79,40 @@ private:
         while (bucketIndex < hashTable->capacity) {
             while (nodeIndex < hashTable->table.get(bucketIndex).getSize()) {
                 if (hashTable->table.get(bucketIndex).get(nodeIndex).isOccupied) {
-                    return;  // Нашли валидный элемент, выходим
+                    return;
                 }
                 ++nodeIndex;
             }
             ++bucketIndex;
-            nodeIndex = 0; // Начинаем с начала следующей цепочки
+            nodeIndex = 0;
         }
-        // Если дошли до конца, bucketIndex будет равен hashTable->capacity
     }
 
 public:
+    static ConstHashTableIterator end(const HashTable<K, V>* table) {
+        return ConstHashTableIterator(table, table->capacity, 0);
+    }
+
     using value_type = const K&;
 
     explicit ConstHashTableIterator(const HashTable<K, V>* table, size_t bucket = 0, size_t node = 0)
             : hashTable(table), bucketIndex(bucket), nodeIndex(node) {
-        if (hashTable) {
-            findNextValid(); // Находим первый валидный элемент при создании
+        if (!hashTable) {
+            throw std::runtime_error("HashTable is NULL");
         }
+        findNextValid();
     }
 
     value_type operator*() const {
-        // Проверка, что итератор валиден (не указывает за пределы хеш-таблицы)
-        if(bucketIndex >= hashTable->capacity) {
+        if (bucketIndex >= hashTable->capacity) {
             throw std::runtime_error("Iterator is out of range");
         }
         return hashTable->table.get(bucketIndex).get(nodeIndex).key;
     }
 
     ConstHashTableIterator& operator++() {
-        if (hashTable) {
-            ++nodeIndex;
-            findNextValid();
-        }
+        ++nodeIndex;
+        findNextValid();
         return *this;
     }
 
@@ -123,7 +123,6 @@ public:
     }
 
     bool operator==(const ConstHashTableIterator& other) const {
-        // Сравниваем итераторы, учитывая что end итератор будет валидным
         return hashTable == other.hashTable &&
                bucketIndex == other.bucketIndex &&
                nodeIndex == other.nodeIndex;

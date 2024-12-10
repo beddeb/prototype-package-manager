@@ -11,18 +11,28 @@ public:
     explicit ISet(size_t initialCapacity = 4) : table(initialCapacity) {}
 
     void add(const T& element) {
-        if (table.contains(element)) {
-            throw std::runtime_error("Element existed");
+//        if (table.contains(element)) {
+//            throw std::runtime_error("Element existed");
+//        }
+//        table.insert(element, nullptr);
+        try {
+            table.insert(element, nullptr);
+        } catch (std::runtime_error& e) {
+            throw e;
         }
-        table.insert(element, nullptr);
     }
 
     void remove(const T& element) {
-        if (table.contains(element)) {
+//        if (table.contains(element)) {
+//            table.remove(element);
+//            return;
+//        }
+//        throw std::runtime_error("Element not found");
+        try {
             table.remove(element);
-            return;
+        } catch (std::runtime_error& e) {
+            throw e;
         }
-        throw std::runtime_error("Element not found");
     }
 
     bool contains(const T& element) const {
