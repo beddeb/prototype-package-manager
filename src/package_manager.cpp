@@ -21,8 +21,8 @@ void PackageManager::printPackageInfo(const Package& pkg) {
 // Вспомогательная функция для вывода всех установленных пакетов
 void PackageManager::printInstalledPackages(const PackageManager& pm) {
     std::cout << "\nInstalled packages:\n";
-    for (const auto& pkg_pair : pm.getInstalledPackages()) {
-        printPackageInfo(pkg_pair.first);
+    for (const auto& pac : pm.getInstalledPackages()) {
+        printPackageInfo(pac);
     }
     std::cout << "------------------------\n";
 }

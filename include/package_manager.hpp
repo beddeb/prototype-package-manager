@@ -13,7 +13,7 @@ private:
         for (const auto& dep : package.dependencies) {
             bool found = false;
             for (const auto& installed_pair : installed_packages) {
-                if (installed_pair.first.name == dep) {
+                if (installed_pair.name == dep) {
                     found = true;
                     break;
                 }
@@ -31,19 +31,22 @@ public:
         if (!checkDependencies(package)) {
             throw std::runtime_error("Dependencies not satisfied");
         }
-        for (const auto& installed_pair : installed_packages) {
-            if (installed_pair.first.name == package.name &&
-                installed_pair.first.version < package.version) {
-                installed_packages.remove(installed_pair.first);
-                break;
+        for (const auto& installed_pac : installed_packages) {
+            if (installed_pac.name == package.name) {
+                if (installed_pac.version < package.version) {
+                    installed_packages.remove(installed_pac);
+                    break;
+                } else if (installed_pac.version > package.version) {
+                    throw std::runtime_error("Is already a package with a newer version");
+                }
             }
         }
         installed_packages.add(package);
     }
 
     void remove(const Package& package) {
-        for (const auto& installed_pair : installed_packages) {
-            for (const auto& dep : installed_pair.first.dependencies) {
+        for (const auto& installed_pac : installed_packages) {
+            for (const auto& dep : installed_pac.dependencies) {
                 if (dep == package.name) {
                     throw std::runtime_error("Package is required by other packages");
                 }
@@ -62,8 +65,8 @@ public:
 
     Package* findPackage(const std::string& name) {
         for (const auto& package_pair : installed_packages) {
-            if (package_pair.first.name == name) {
-                return const_cast<Package*>(&package_pair.first);
+            if (package_pair.name == name) {
+                return const_cast<Package*>(&package_pair);
             }
         }
         return nullptr;

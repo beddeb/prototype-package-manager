@@ -20,6 +20,12 @@ struct Version {
         if (minor != other.minor) return minor < other.minor;
         return patch < other.patch;
     }
+
+    bool operator>(const Version& other) const {
+        if (major != other.major) return major > other.major;
+        if (minor != other.minor) return minor > other.minor;
+        return patch > other.patch;
+    }
 };
 
 struct Package {
