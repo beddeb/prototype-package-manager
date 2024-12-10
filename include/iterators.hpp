@@ -71,4 +71,3 @@ public:
         return !(*this == other);
     }
 };
-

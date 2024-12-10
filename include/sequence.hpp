@@ -1,21 +1,23 @@
+// sequence.hpp
+
 #pragma once
 
 #include <stdexcept>
-#include <utility> // Для std::move
+#include <utility>
 #include "iterators.hpp"
 
 template<typename T>
 class Sequence {
-private:
+protected:
     T* data;
     size_t capacity;
     size_t size;
 
     void resize() {
-        capacity = capacity ? capacity * 2 : 1;  // Увеличиваем вместимость или инициализируем, если capacity == 0
+        capacity = capacity ? capacity * 2 : 1;
         T* newData = new T[capacity];
         for (size_t i = 0; i < size; ++i) {
-            newData[i] = std::move(data[i]); // Используем перемещение вместо копирования, если возможно
+            newData[i] = std::move(data[i]);
         }
         delete[] data;
         data = newData;
@@ -30,7 +32,6 @@ public:
         }
     }
 
-    // Конструктор перемещения
     Sequence(Sequence&& other) noexcept : data(other.data), capacity(other.capacity), size(other.size) {
         other.data = nullptr;
         other.size = other.capacity = 0;
@@ -40,14 +41,14 @@ public:
         delete[] data;
     }
 
-    void add(const T& element) {
+    virtual void add(const T& element) {
         if (size == capacity) {
             resize();
         }
         data[size++] = element;
     }
 
-    void remove(size_t index) {
+    virtual void remove(size_t index) {
         if (index >= size) {
             throw std::out_of_range("Index out of range");
         }
@@ -57,7 +58,14 @@ public:
         --size;
     }
 
-    T& get(size_t index) const {
+    virtual T& get(size_t index) {
+        if (index >= size) {
+            throw std::out_of_range("Index out of range");
+        }
+        return data[index];
+    }
+
+    virtual const T& get(size_t index) const {
         if (index >= size) {
             throw std::out_of_range("Index out of range");
         }
@@ -68,7 +76,6 @@ public:
         return size;
     }
 
-    // Оператор присваивания копированием
     Sequence& operator=(const Sequence& other) {
         if (this != &other) {
             Sequence tmp(other);
@@ -77,7 +84,6 @@ public:
         return *this;
     }
 
-    // Оператор присваивания перемещением
     Sequence& operator=(Sequence&& other) noexcept {
         if (this != &other) {
             delete[] data;
@@ -90,7 +96,6 @@ public:
         return *this;
     }
 
-    // Оператор индексации
     T& operator[](size_t index) {
         if (index >= size) {
             throw std::out_of_range("Index out of range");
@@ -105,13 +110,11 @@ public:
         return data[index];
     }
 
-    // Оператор += для добавления элемента
     Sequence& operator+=(const T& element) {
         add(element);
         return *this;
     }
 
-    // Операторы сравнения
     bool operator==(const Sequence& other) const {
         if (size != other.size) return false;
         for (size_t i = 0; i < size; ++i) {
@@ -124,7 +127,6 @@ public:
         return !(*this == other);
     }
 
-    // Методы для получения итераторов
     Iterator<T> begin() {
         return Iterator<T>(data);
     }

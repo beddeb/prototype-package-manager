@@ -24,7 +24,7 @@ private:
     }
 
 public:
-    using value_type = std::pair<const K&, V&>;
+    using value_type = const K&;
 
     explicit HashTableIterator(HashTable<K, V>* table, size_t bucket = 0, size_t node = 0)
             : hashTable(table), bucketIndex(bucket), nodeIndex(node) {
@@ -34,8 +34,7 @@ public:
     }
 
     value_type operator*() const {
-        auto& node = hashTable->table.get(bucketIndex).get(nodeIndex);
-        return {node.key, node.value};
+        return hashTable->table.get(bucketIndex).get(nodeIndex).key;
     }
 
     HashTableIterator& operator++() {
@@ -84,7 +83,7 @@ private:
     }
 
 public:
-    using value_type = std::pair<const K&, const V&>;
+    using value_type = const K&;
 
     explicit ConstHashTableIterator(const HashTable<K, V>* table, size_t bucket = 0, size_t node = 0)
             : hashTable(table), bucketIndex(bucket), nodeIndex(node) {
@@ -94,8 +93,7 @@ public:
     }
 
     value_type operator*() const {
-        const auto& node = hashTable->table.get(bucketIndex).get(nodeIndex);
-        return {node.key, node.value};
+        return hashTable->table.get(bucketIndex).get(nodeIndex).key;
     }
 
     ConstHashTableIterator& operator++() {
