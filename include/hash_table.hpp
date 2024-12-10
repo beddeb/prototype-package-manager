@@ -1,7 +1,8 @@
 #pragma once
 
 #include <stdexcept>
-#include "sequence.hpp"
+#include "array_sequence.hpp"
+#include "list_sequence.hpp"
 #include "hash_table_iterators.hpp"
 
 
@@ -24,7 +25,7 @@ private:
     static constexpr double P = 2.0;  // Пороговое значение для сжатия
     static constexpr double Q = 1.5;  // Коэффициент расширения/сжатия
 
-    Sequence<Sequence<HashNode<K,V>>> table;  // Основная таблица с цепочками
+    ArraySequence<ListSequence<HashNode<K,V>>> table;  // Основная таблица с цепочками
     size_t elementCount;
     size_t capacity;
 
@@ -40,9 +41,9 @@ private:
 
     // Перестройка таблицы
     void rebuild(size_t newCapacity) {
-        Sequence<Sequence<HashNode<K,V>>> newTable(newCapacity);
+        ArraySequence<ListSequence<HashNode<K,V>>> newTable(newCapacity);
         for (size_t i = 0; i < newCapacity; ++i) {
-            newTable.add(Sequence<HashNode<K,V>>());
+            newTable.add(ListSequence<HashNode<K,V>>()); // Исправлено: создание ListSequence
         }
 
         for (size_t i = 0; i < capacity; ++i) {
@@ -69,35 +70,35 @@ private:
 
 public:
     explicit HashTable(size_t initialCapacity = 4)
-            : elementCount(0), capacity(initialCapacity) {
+            : elementCount(0), capacity(initialCapacity), table(initialCapacity) { // Инициализация ArraySequence с capacity
         for (size_t i = 0; i < capacity; ++i) {
-            table.add(Sequence<HashNode<K,V>>());
+            table.add(ListSequence<HashNode<K,V>>());
         }
     }
 
     void insert(const K& key, const V& value) {
         size_t index = getIndex(key);
+        ListSequence<HashNode<K, V>>& bucket = table.get(index); // Получаем ссылку на ListSequence
 
         // Проверяем, существует ли уже такой ключ
-        for (size_t i = 0; i < table.get(index).getSize(); ++i) {
-            if (table.get(index).get(i).isOccupied &&
-                table.get(index).get(i).key == key) {
-                table.get(index).get(i).value = value;
+        for (size_t i = 0; i < bucket.getSize(); ++i) {
+            if (bucket.get(i).isOccupied && bucket.get(i).key == key) {
+                bucket.get(i).value = value;
                 return;
             }
         }
 
-        table.get(index).add(HashNode<K, V>(key, value));
+        bucket.add(HashNode<K, V>(key, value));
         ++elementCount;
         checkAndResize();
     }
 
-    V& get(const K& key) {
+    const V& get(const K& key) const { // Добавлен const для метода
         size_t index = getIndex(key);
-        for (size_t i = 0; i < table.get(index).getSize(); ++i) {
-            if (table.get(index).get(i).isOccupied &&
-                table.get(index).get(i).key == key) {
-                return table.get(index).get(i).value;
+        const ListSequence<HashNode<K, V>>& bucket = table.get(index);
+        for (size_t i = 0; i < bucket.getSize(); ++i) {
+            if (bucket.get(i).isOccupied && bucket.get(i).key == key) {
+                return bucket.get(i).value;
             }
         }
         throw std::runtime_error("Key not found");
@@ -105,10 +106,11 @@ public:
 
     void remove(const K& key) {
         size_t index = getIndex(key);
-        for (size_t i = 0; i < table.get(index).getSize(); ++i) {
-            if (table.get(index).get(i).isOccupied &&
-                table.get(index).get(i).key == key) {
-                table.get(index).get(i).isOccupied = false;
+        ListSequence<HashNode<K, V>>& bucket = table.get(index); // Получаем ссылку на ListSequence
+
+        for (size_t i = 0; i < bucket.getSize(); ++i) {
+            if (bucket.get(i).isOccupied && bucket.get(i).key == key) {
+                bucket.get(i).isOccupied = false;
                 --elementCount;
                 checkAndResize();
                 return;
@@ -123,9 +125,10 @@ public:
 
     bool contains(const K& key) const {
         size_t index = getIndex(key);
-        for (size_t i = 0; i < table.get(index).getSize(); ++i) {
-            if (table.get(index).get(i).isOccupied &&
-                table.get(index).get(i).key == key) { // Проверка на равенство ключей
+        const ListSequence<HashNode<K, V>>& bucket = table.get(index); // Получаем константную ссылку
+
+        for (size_t i = 0; i < bucket.getSize(); ++i) {
+            if (bucket.get(i).isOccupied && bucket.get(i).key == key) { // Проверка на равенство ключей
                 return true;
             }
         }
