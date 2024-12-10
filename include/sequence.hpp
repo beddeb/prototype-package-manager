@@ -1,10 +1,9 @@
-// sequence.hpp
-
 #pragma once
 
 #include <stdexcept>
 #include <utility>
 #include "iterators.hpp"
+
 
 template<typename T>
 class Sequence {
