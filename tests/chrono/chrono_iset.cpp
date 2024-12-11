@@ -36,7 +36,6 @@ void chronoRemoveISet(size_t elementCount) {
             elements.push_back(i);
         }
     }
-
     auto start = high_resolution_clock::now();
     for (const auto& element : elements) {
         set.remove(element);
