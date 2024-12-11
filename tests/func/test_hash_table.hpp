@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../include/hash_table.hpp"
+#include "../../include/hash_table.hpp"
 
 
 void testInsertAndGetHT();

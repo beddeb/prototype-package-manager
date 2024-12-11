@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../include/array_sequence.hpp"
+#include "../../include/array_sequence.hpp"
 
 
 void testAddElementAS();

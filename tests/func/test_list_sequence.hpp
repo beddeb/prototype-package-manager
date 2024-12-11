@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../include/list_sequence.hpp"
+#include "../../include/list_sequence.hpp"
 
 
 void testAddElementLS();

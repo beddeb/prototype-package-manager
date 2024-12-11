@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../include/sequence.hpp"
+#include "../../include/sequence.hpp"
 
 
 void testAddElementS();

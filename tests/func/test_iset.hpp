@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../include/iset.hpp"
+#include "../../include/iset.hpp"
 
 
 void testAddIS();
