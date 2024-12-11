@@ -8,4 +8,7 @@ add_executable(lab3 main.cpp
 
         tests/test_sequence.cpp
         tests/test_list_sequence.cpp
-        tests/test_array_sequence.cpp)
+        tests/test_array_sequence.cpp
+        tests/test_hash_table.cpp
+        tests/test_iset.cpp
+        tests/test_package_manager.cpp)
