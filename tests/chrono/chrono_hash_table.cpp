@@ -105,25 +105,25 @@ void chronoRemovalHashTable(size_t elementCount) {
 }
 
 void chronoHashTable(size_t num_elements) {
-    cout << "Performance tests for <int, int>:" << endl;
+    cout << "HashTable tests for <int, int>:" << endl;
     chronoInsertionHashTable<int, int>(num_elements);
     chronoGetHashTable<int, int>(num_elements);
     chronoRemovalHashTable<int, int>(num_elements);
     cout << endl;
 
-    cout << "Performance tests for <int, string>:" << endl;
+    cout << "HashTable tests for <int, string>:" << endl;
     chronoInsertionHashTable<int, string>(num_elements);
     chronoGetHashTable<int, string>(num_elements);
     chronoRemovalHashTable<int, string>(num_elements);
     cout << endl;
 
-    cout << "Performance tests for <string, int>:" << endl;
+    cout << "HashTable tests for <string, int>:" << endl;
     chronoInsertionHashTable<string, int>(num_elements);
     chronoGetHashTable<string, int>(num_elements);
     chronoRemovalHashTable<string, int>(num_elements);
     cout << endl;
 
-    cout << "Performance tests for <string, string>:" << endl;
+    cout << "HashTable tests for <string, string>:" << endl;
     chronoInsertionHashTable<string, string>(num_elements);
     chronoGetHashTable<string, string>(num_elements);
     chronoRemovalHashTable<string, string>(num_elements);
