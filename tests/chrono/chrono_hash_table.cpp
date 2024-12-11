@@ -1,7 +1,7 @@
 #include <iostream>
 #include <chrono>
+#include <vector>
 #include "chrono_hash_table.hpp"
-#include "string_generator.hpp"
 
 
 using namespace std;
@@ -13,13 +13,13 @@ void chronoInsertionHashTable(size_t elementCount) {
     auto start = high_resolution_clock::now();
     for (size_t i = 0; i < elementCount; ++i) {
         if constexpr (std::is_same_v<K, std::string> && std::is_same_v<V, std::string>) {
-            table.insert(generateRandomString(10), generateRandomString(10));
+            table.insert(to_string(i), to_string(i));
         } else if constexpr (std::is_same_v<K, std::string>) {
-            table.insert(generateRandomString(10), V(i));
+            table.insert(to_string(i), i);
         } else if constexpr (std::is_same_v<V, std::string>) {
-            table.insert(K(i), generateRandomString(10));
+            table.insert(i, to_string(i));
         } else {
-            table.insert(K(i), V(i));
+            table.insert(i, i);
         }
     }
     auto end = high_resolution_clock::now();
@@ -33,19 +33,17 @@ void chronoGetHashTable(size_t elementCount) {
     std::vector<K> keys;
     for (size_t i = 0; i < elementCount; ++i) {
         if constexpr (std::is_same_v<K, std::string> && std::is_same_v<V, std::string>) {
-            auto key = generateRandomString(10);
-            table.insert(key, generateRandomString(10));
-            keys.push_back(key);
+            table.insert(to_string(i), to_string(i));
+            keys.push_back(to_string(i));
         } else if constexpr (std::is_same_v<K, std::string>) {
-            auto key = generateRandomString(10);
-            table.insert(key, V(i));
-            keys.push_back(key);
+            table.insert(to_string(i), i);
+            keys.push_back(to_string(i));
         } else if constexpr (std::is_same_v<V, std::string>) {
-            table.insert(K(i), generateRandomString(10));
-            keys.push_back(K(i));
+            table.insert(i, to_string(i));
+            keys.push_back(i);
         } else {
-            table.insert(K(i), V(i));
-            keys.push_back(K(i));
+            table.insert(i, i);
+            keys.push_back(i);
         }
     }
     auto start = chrono::high_resolution_clock::now();
@@ -63,32 +61,26 @@ void chronoRemovalHashTable(size_t elementCount) {
     std::vector<K> keys;
     for (size_t i = 0; i < elementCount; ++i) {
         if constexpr (std::is_same_v<K, std::string> && std::is_same_v<V, std::string>) {
-            auto key = generateRandomString(10);
-            table.insert(key, generateRandomString(10));
-            keys.push_back(key);
+            table.insert(to_string(i), to_string(i));
+            keys.push_back(to_string(i));
         } else if constexpr (std::is_same_v<K, std::string>) {
-            auto key = generateRandomString(10);
-            table.insert(key, V(i));
-            keys.push_back(key);
+            table.insert(to_string(i), i);
+            keys.push_back(to_string(i));
         } else if constexpr (std::is_same_v<V, std::string>) {
-            table.insert(K(i), generateRandomString(10));
-            keys.push_back(K(i));
+            table.insert(i, to_string(i));
+            keys.push_back(i);
         } else {
-            table.insert(K(i), V(i));
-            keys.push_back(K(i));
+            table.insert(i, i);
+            keys.push_back(i);
         }
     }
     auto start = chrono::high_resolution_clock::now();
-    size_t removedCount = 0;
     for (const auto& key : keys) {
-        try {
-            table.remove(key);
-            ++removedCount;
-        } catch (const std::runtime_error& e) {}
+        table.remove(key);
     }
     auto end = chrono::high_resolution_clock::now();
     auto duration = chrono::duration_cast<chrono::milliseconds>(end - start);
-    cout << "Removal time for " << removedCount << " elements: " << duration.count() << " ms" << endl;
+    cout << "Removal time for " << elementCount << " elements: " << duration.count() << " ms" << endl;
 }
 
 void chronoHashTable(size_t num_elements) {
