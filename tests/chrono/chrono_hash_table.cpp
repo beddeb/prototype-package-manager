@@ -1,24 +1,11 @@
 #include <iostream>
 #include <chrono>
-#include <random>
 #include "chrono_hash_table.hpp"
+#include "string_generator.hpp"
 
 
 using namespace std;
 using namespace chrono;
-
-string generateRandomString(size_t length) {
-    const string characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=<>{}[]/|";
-    string result;
-    result.reserve(length);
-    random_device rd;
-    mt19937 generator(rd());
-    uniform_int_distribution<> distribution(0, characters.length() - 1);
-    for (size_t i = 0; i < length; ++i) {
-        result.push_back(characters[distribution(generator)]);
-    }
-    return result;
-}
 
 template<typename K, typename V>
 void chronoInsertionHashTable(size_t elementCount) {

@@ -4,8 +4,6 @@
 #include "../../include/hash_table.hpp"
 
 
-std::string generateRandomString(size_t length);
-
 void chronoInsertionHashTable(size_t elementCount);
 
 void chronoGetHashTable(size_t elementCount);
