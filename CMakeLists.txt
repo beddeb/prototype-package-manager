@@ -11,5 +11,6 @@ add_executable(lab3 main.cpp
         tests/func/func_iset.cpp
         tests/func/func_package_manager.cpp
 
-        tests/chrono/chrono_sequences.cpp)
+        tests/chrono/chrono_sequences.cpp
+        tests/chrono/chrono_hash_table.cpp)
 
