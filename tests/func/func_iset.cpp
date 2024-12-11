@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cassert>
-#include "test_iset.hpp"
+#include "func_iset.hpp"
 
 
 void testAddIS() {

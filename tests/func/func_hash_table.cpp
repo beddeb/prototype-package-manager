@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cassert>
-#include "test_hash_table.hpp"
+#include "func_hash_table.hpp"
 
 
 void testInsertAndGetHT() {

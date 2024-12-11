@@ -9,7 +9,6 @@
 
 std::string demangle(const char* mangled_name) {
     int status = 0;
-    // Use unique_ptr to manage the memory allocated by abi::__cxa_demangle
     std::unique_ptr<char, void(*)(void*)> res(
             abi::__cxa_demangle(mangled_name, nullptr, nullptr, &status),
             std::free

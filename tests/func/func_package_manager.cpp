@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cassert>
-#include "test_package_manager.hpp"
+#include "func_package_manager.hpp"
 
 
 void testInstall() {
