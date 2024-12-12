@@ -3,10 +3,9 @@
 #include <sstream>
 #include <stdexcept>
 #include <vector>
-#include "include/package_manager.hpp" // Или правильный путь к package_manager.hpp
+#include "include/package_manager.hpp"
 
 
-// Функция для обработки пользовательского ввода
 void processCommand(PackageManager& pm) {
     std::string line;
     std::getline(std::cin, line);
@@ -15,9 +14,20 @@ void processCommand(PackageManager& pm) {
     ss >> command;
 
     if (command == "install") {
+        if (ss.eof()) {
+            std::cerr << "Error: Insufficient data. Package name and version are required.\n";
+            return;
+        }
+
         std::string packageName;
         int major, minor, patch;
         ss >> packageName >> major >> minor >> patch;
+
+        if (ss.fail() || major <= 0 || minor < 0 || patch < 0) {
+            std::cerr << "Error: Invalid data format or version. Version must be positive.\n";
+            return;
+        }
+
         std::vector<std::string> dependencies;
         std::string dep;
         while (ss >> dep) {
@@ -25,8 +35,8 @@ void processCommand(PackageManager& pm) {
         }
 
         Package pkg(packageName, Version(major, minor, patch));
-        for (const auto& i : dependencies){
-            pkg.dependencies.add(i);
+        for (const auto& dep : dependencies) {
+            pkg.dependencies.add(dep);
         }
 
         try {
@@ -39,6 +49,11 @@ void processCommand(PackageManager& pm) {
         std::string packageName;
         int major, minor, patch;
         ss >> packageName >> major >> minor >> patch;
+
+        if (ss.fail() || major <= 0 || minor < 0 || patch < 0) {
+            std::cerr << "Error: Invalid data format or version. Version must be positive.\n";
+            return;
+        }
 
         Package pkg(packageName, Version(major, minor, patch));
         try {
@@ -59,8 +74,8 @@ void processCommand(PackageManager& pm) {
             std::cout << "Package '" << packageName << "' not found.\n";
         }
     } else if (command == "exit") {
+        pm.saveToFile("../data/pgk.txt"); // Сохранение в файл при выходе
         exit(0);
-        return;
     } else if (command == "help") {
         std::cout << "Available commands:\n"
                   << "  install <package_name> <major> <minor> <patch> [dependencies...]\n"
@@ -74,23 +89,24 @@ void processCommand(PackageManager& pm) {
     }
 }
 
-
 int main() {
     PackageManager pm;
+    pm.loadFromFile("../data/pgk.txt"); // Загрузка из файла при старте
     std::cout << "Package Manager started. Type 'help' for commands.\n";
 
     while (true) {
         std::cout << "> ";
         try {
             processCommand(pm);
-            if (std::cin.eof()){
+        } catch (const std::runtime_error& e) {
+            if (std::string(e.what()) == "exit" || std::string(e.what()) == "EOF") {
                 break;
+            } else {
+                std::cerr << "An unexpected error occurred: " << e.what() << "\n";
             }
         } catch (const std::exception& e) {
             std::cerr << "An unexpected error occurred: " << e.what() << "\n";
         }
-
     }
-    std::cout << "Package Manager stopped.\n";
     return 0;
 }

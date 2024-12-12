@@ -16,4 +16,3 @@ add_executable(lab3 main.cpp
         tests/chrono/chrono_iset.cpp
 
         tests/chrono/string_generator.cpp)
-

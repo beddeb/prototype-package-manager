@@ -1,8 +1,10 @@
 #pragma once
 
 #include "package.hpp"
+#include "iset.hpp"
 #include <string>
 #include <stdexcept>
+#include <fstream>
 
 
 class PackageManager {
@@ -26,7 +28,7 @@ private:
 public:
     void install(const Package& package) {
         if (installed_packages.contains(package)) {
-            throw std::runtime_error("Package already installed");
+            throw std::runtime_error("Package '" + package.name + "' with version " + std::to_string(package.version.major) + "." + std::to_string(package.version.minor) + "." + std::to_string(package.version.patch) + " is already installed.");
         }
         if (!checkDependencies(package)) {
             throw std::runtime_error("Dependencies not satisfied");
@@ -52,7 +54,12 @@ public:
                 }
             }
         }
-        installed_packages.remove(package);
+        if (installed_packages.contains(package)){
+            installed_packages.remove(package);
+        } else {
+            throw std::runtime_error("Package '" + package.name + "' with version " + std::to_string(package.version.major) + "." + std::to_string(package.version.minor) + "." + std::to_string(package.version.patch) + " is not installed.");
+        }
+
     }
 
     [[nodiscard]] bool isInstalled(const Package& package) const {
@@ -79,4 +86,10 @@ public:
     static void printPackageInfo(const Package& pkg);
 
     static void printInstalledPackages(const PackageManager& pm);
+
+    void saveToFile(const std::string& filename);
+    void loadFromFile(const std::string& filename);
+
+    static bool is_valid_name(const std::string& name);
+
 };
