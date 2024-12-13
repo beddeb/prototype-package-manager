@@ -98,12 +98,15 @@ void PackageManager::printInstalledPackages(const PackageManager& pm) {
     std::cout << "------------------------\n";
 }
 
-bool PackageManager::is_valid_name(const std::string& name){
-    if (!isalpha(name[0])){
+bool PackageManager::is_valid_name(const std::string& name) {
+    if (name.empty()) {
         return false;
     }
-    for (char c : name){
-        if (!isalnum(c)){
+    if (!isalpha(name[0])) {
+        return false;
+    }
+    for (size_t i = 1; i < name.size(); ++i) {
+        if (!isalnum(name[i]) && name[i] != '_') {
             return false;
         }
     }
