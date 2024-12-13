@@ -9,7 +9,7 @@ template <typename Struct>
 std::vector<Dot> cppPlotCore(int values) {
     std::vector<Dot> datasort;
     Struct test_struct;
-    const int step = values / 10;
+    const int step = values / 20;
     std::cout << "Generating plot data..." << std::endl;
 
     for (int i = step; i <= values; i += step) {

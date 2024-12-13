@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <vector>
 #include "../include/package_manager.hpp"
 
 
@@ -32,6 +33,8 @@ void PackageManager::loadFromFile(const std::string& filename) {
         std::cout << "Could not open file for reading: " + filename << "\n";
         return;
     }
+
+    std::vector<Package> packages;
     std::string line;
     while (std::getline(inFile, line)) {
         std::stringstream ss(line);
@@ -43,7 +46,7 @@ void PackageManager::loadFromFile(const std::string& filename) {
             continue;
         }
 
-        if (!PackageManager::is_valid_name(packageName)){
+        if (!PackageManager::is_valid_name(packageName)) {
             std::cerr << "Error: Invalid package name format. Expected: a string consisting only of letters and numbers, with the first character being a letter.\n";
             continue;
         }
@@ -57,22 +60,42 @@ void PackageManager::loadFromFile(const std::string& filename) {
 
         std::string dep;
         while (ss >> dep) {
-            if (!PackageManager::is_valid_name(dep)){
+            if (!PackageManager::is_valid_name(dep)) {
                 std::cerr << "Error: Invalid dependency name format. Expected: a string consisting only of letters and numbers, with the first character being a letter.\n";
                 continue;
             }
             package.dependencies.add(dep);
         }
-        try {
-            install(package);
-        } catch (const std::runtime_error& e) {
-            if (std::string(e.what()) != "Dependencies not satisfied" && std::string(e.what()).find("Package '") != 0){
-                std::cerr << "Error: " << e.what() << "\n";
+        packages.push_back(package);
+    }
+    inFile.close();
+
+    std::vector<Package> pending_packages = packages;
+    std::vector<Package> successfully_installed;
+
+    while (!pending_packages.empty()) {
+        std::vector<Package> still_pending;
+        for (const auto& package : pending_packages) {
+            try {
+                install(package);
+                successfully_installed.push_back(package);
+            } catch (const std::runtime_error& e) {
+                if (std::string(e.what()) == "Dependencies not satisfied") {
+                    still_pending.push_back(package);
+                } else {
+                    std::cerr << "Error: " << e.what() << "\n";
+                }
             }
         }
+        if (still_pending.size() == pending_packages.size()) {
+            std::cerr << "Error: Unresolved dependencies or circular dependencies detected.\n";
+            for (const auto& pkg : still_pending) {
+                std::cerr << "Package " << pkg.name << " could not be installed.\n";
+            }
+            break;
+        }
+        pending_packages = still_pending;
     }
-
-    inFile.close();
 }
 
 void PackageManager::printPackageInfo(const Package& pkg) {
