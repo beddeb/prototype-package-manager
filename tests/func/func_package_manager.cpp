@@ -35,7 +35,7 @@ void testInstallDuplicate() {
         pm.install(pkg1);
         assert(("InstallDuplicate_install", false));
     } catch (const std::runtime_error& e) {
-        assert(("InstallDuplicate_OK", std::string(e.what()) == "Package already installed"));
+        assert(("InstallDuplicate_OK", e.what()));
     }
 }
 

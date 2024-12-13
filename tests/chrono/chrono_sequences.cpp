@@ -1,20 +1,9 @@
 #include <iostream>
-#include <cxxabi.h>
-#include <memory>
 #include <chrono>
 #include <vector>
 #include <list>
 #include "chrono_sequences.hpp"
-
-
-std::string demangle(const char* mangled_name) {
-    int status = 0;
-    std::unique_ptr<char, void(*)(void*)> res(
-            abi::__cxa_demangle(mangled_name, nullptr, nullptr, &status),
-            std::free
-    );
-    return (status == 0) ? res.get() : mangled_name;
-}
+#include "demangle.hpp"
 
 template <typename Container, typename T, typename Comparator>
 void chronoAddInt(size_t num_elements) {
