@@ -50,42 +50,18 @@ clear
 - `fpkgmn` - тест PackageManager
 
 ### Нагрузочное тестирование
-- `chseq`
-  `<values>` - сравнение Sequence и std::vector
-- `chlistseq`
-   `<values>` - сравнение ListSequence и std::list
-- `charrseq`
-  `<values>` - сравнение ArraySequence и std::vector
-- `chhasht`
-  `<values>` - сравнение HashTable и std::unordered_map
-- `chiset`
-  `<values>` - сравнение ISet и std::set
-  
-Пример:
-```
-chseq
-100000
-```
-#### Обратите внимание: значение количества элементов вводятся после команды в следующей строке!
+- `chseq <values>` - сравнение Sequence и std::vector
+- `chlistseq <values>` - сравнение ListSequence и std::list
+- `charrseq <values>` - сравнение ArraySequence и std::vector
+- `chhasht <values>` - сравнение HashTable и std::unordered_map
+- `chiset <values>` - сравнение ISet и std::set
 
 ### Построение графиков
-- `pseq`
-  `<values>` - график Sequence vs std::vector
-- `plistseq`
-  `<values>` - график ListSequence vs std::list
-- `parrseq`
-  `<values>` - график ArraySequence vs std::vector
-- `phasht`
-  `<values>` - график HashTable vs std::unordered_map
-- `piset`
-  `<values>` - график ISet vs std::set
-
-Пример:
-```
-pseq
-100000
-```
-#### Обратите внимание: значение количества элементов вводятся после команды в следующей строке!
+- `pseq <values>` - график Sequence vs std::vector
+- `plistseq <values>` - график ListSequence vs std::list
+- `parrseq <values>` - график ArraySequence vs std::vector
+- `phasht <values>` - график HashTable vs std::unordered_map
+- `piset <values>` - график ISet vs std::set
 
 ## Дополнительные команды
 
