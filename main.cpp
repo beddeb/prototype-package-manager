@@ -28,6 +28,7 @@ void clearConsole() {
 
 void processCommand(PackageManager &pm) {
     Sequence<DataSeries> plot_data;
+    int values;
     std::string command;
     std::getline(std::cin, command);
     std::stringstream ss(command);
@@ -116,42 +117,36 @@ void processCommand(PackageManager &pm) {
     } else if (command == "fpkgmn") {
         testPackageManager();
     } else if (command == "chseq") {
-        int values;
         if (!(ss >> values)) {
             std::cerr << "Error: Number of values is required.\n";
             return;
         }
         chronoSequence(values, 100);
     } else if (command == "chlistseq") {
-        int values;
         if (!(ss >> values)) {
             std::cerr << "Error: Number of values is required.\n";
             return;
         }
         chronoListSequence(values, 100);
     } else if (command == "charrseq") {
-        int values;
         if (!(ss >> values)) {
             std::cerr << "Error: Number of values is required.\n";
             return;
         }
         chronoArraySequence(values, 100);
     } else if (command == "chhasht") {
-        int values;
         if (!(ss >> values)) {
             std::cerr << "Error: Number of values is required.\n";
             return;
         }
         chronoHashTable(values);
     } else if (command == "chiset") {
-        int values;
         if (!(ss >> values)) {
             std::cerr << "Error: Number of values is required.\n";
             return;
         }
         chronoISet(values);
     } else if (command == "pseq") {
-        int values;
         if (!(ss >> values)) {
             std::cerr << "Error: Number of values is required.\n";
             return;
@@ -160,7 +155,6 @@ void processCommand(PackageManager &pm) {
         plot_data.add(DataSeries("std::vector", Color::Blue));
         plotInit<Sequence<int>, std::vector<int>>(values, plot_data);
     } else if (command == "plistseq") {
-        int values;
         if (!(ss >> values)) {
             std::cerr << "Error: Number of values is required.\n";
             return;
@@ -169,7 +163,6 @@ void processCommand(PackageManager &pm) {
         plot_data.add(DataSeries("std::list", Color::Blue));
         plotInit<ListSequence<int>, std::list<int>>(values, plot_data);
     } else if (command == "parrseq") {
-        int values;
         if (!(ss >> values)) {
             std::cerr << "Error: Number of values is required.\n";
             return;
@@ -178,7 +171,6 @@ void processCommand(PackageManager &pm) {
         plot_data.add(DataSeries("std::vector", Color::Blue));
         plotInit<ArraySequence<int>, std::vector<int>>(values, plot_data);
     } else if (command == "phasht") {
-        int values;
         if (!(ss >> values)) {
             std::cerr << "Error: Number of values is required.\n";
             return;
@@ -187,7 +179,6 @@ void processCommand(PackageManager &pm) {
         plot_data.add(DataSeries("std::unordered_map", Color::Blue));
         plotInit<HashTable<int, int>, std::unordered_map<int, int>>(values, plot_data);
     } else if (command == "piset") {
-        int values;
         if (!(ss >> values)) {
             std::cerr << "Error: Number of values is required.\n";
             return;
