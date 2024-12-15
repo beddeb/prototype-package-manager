@@ -34,6 +34,13 @@ private:
     size_t size_table;
     size_t capacity;
 
+    // Инициализация таблицы пустыми бакетами
+    void initializeTable() {
+        for (size_t i = 0; i < capacity; ++i) {
+            table.add(ListSequence<HashNode<K, V>>());
+        }
+    }
+
     // Определение базовой хеш-функции
     size_t getHashCode(const K &key) const {
         return std::hash<K>{}(key);
@@ -51,9 +58,9 @@ private:
             newTable.add(ListSequence<HashNode<K, V>>());
         }
 
-        for (size_t i = 0; i < capacity; ++i) {
-            for (size_t j = 0; j < table.get(i).getSize(); ++j) {
-                const auto &node = table.get(i).get(j);
+        for (auto it = table.begin(); it != table.end(); ++it) {
+            for (auto inner_it = (*it).begin(); inner_it != (*it).end(); ++inner_it) {
+                const auto &node = *inner_it;
                 if (node.isOccupied) {
                     size_t newIndex = getHashCode(node.key) % new_capacity;
                     newTable.get(newIndex).add(node);
@@ -72,50 +79,65 @@ private:
         }
     }
 
+    ListSequence<HashNode<K, V>>& getBucket(const K& key) {
+        size_t index = getIndex(key);
+        return table.get(index);
+    }
+
+    const ListSequence<HashNode<K, V>>& getBucket(const K& key) const {
+        size_t index = getIndex(key);
+        return table.get(index);
+    }
+
+    bool isMatchingNode(const HashNode<K, V>& node, const K& key) const {
+        return node.isOccupied && node.key == key;
+    }
+
+    const HashNode<K, V>* findNode(const ListSequence<HashNode<K, V>>& bucket, const K& key) const {
+        for (const auto& node : bucket) {
+            if (isMatchingNode(node, key)) {
+                return &node;
+            }
+        }
+        return nullptr;
+    }
+
 public:
     explicit HashTable(size_t initial_capacity = default_capacity)
             : size_table(0), capacity(initial_capacity),
-              table(initial_capacity) { // Инициализация ArraySequence с capacity
-        for (size_t i = 0; i < capacity; ++i) {
-            table.add(ListSequence<HashNode<K, V>>());
-        }
+              table(initial_capacity) {
+        initializeTable();
     }
 
     void insert(const K &key, const V &value) {
-        size_t index = getIndex(key);
-        ListSequence<HashNode<K, V>> &bucket = table.get(index); // Получаем ссылку на ListSequence
+        ListSequence<HashNode<K, V>> &bucket = getBucket(key);
 
-        // Проверяем, существует ли уже такой ключ
-        for (size_t i = 0; i < bucket.getSize(); ++i) {
-            if (bucket.get(i).isOccupied && bucket.get(i).key == key) {
-                bucket.get(i).value = value;
+        for (auto& node : bucket) {
+            if (isMatchingNode(node, key)) {
+                node.value = value;
                 return;
             }
         }
-
         bucket.add(HashNode<K, V>(key, value));
         ++size_table;
         checkAndResize();
     }
 
     const V &get(const K &key) const {
-        size_t index = getIndex(key);
-        const ListSequence<HashNode<K, V>> &bucket = table.get(index);
-        for (size_t i = 0; i < bucket.getSize(); ++i) {
-            if (bucket.get(i).isOccupied && bucket.get(i).key == key) {
-                return bucket.get(i).value;
-            }
+        const ListSequence<HashNode<K, V>> &bucket = getBucket(key);
+        const HashNode<K, V>* node = findNode(bucket, key);
+
+        if (node != nullptr) {
+            return node->value;
         }
         throw std::runtime_error("Key not found");
     }
 
     void remove(const K &key) {
-        size_t index = getIndex(key);
-        ListSequence<HashNode<K, V>> &bucket = table.get(index); // Получаем ссылку на ListSequence
-
-        for (size_t i = 0; i < bucket.getSize(); ++i) {
-            if (bucket.get(i).isOccupied && bucket.get(i).key == key) {
-                bucket.get(i).isOccupied = false;
+        ListSequence<HashNode<K, V>> &bucket = getBucket(key);
+        for (auto& node : bucket) {
+            if (isMatchingNode(node, key)) {
+                node.isOccupied = false;
                 --size_table;
                 checkAndResize();
                 return;
@@ -129,15 +151,8 @@ public:
     }
 
     bool contains(const K &key) const {
-        size_t index = getIndex(key);
-        const ListSequence<HashNode<K, V>> &bucket = table.get(index); // Получаем константную ссылку
-
-        for (size_t i = 0; i < bucket.getSize(); ++i) {
-            if (bucket.get(i).isOccupied && bucket.get(i).key == key) { // Проверка на равенство ключей
-                return true;
-            }
-        }
-        return false;
+        const ListSequence<HashNode<K, V>> &bucket = getBucket(key);
+        return findNode(bucket, key) != nullptr;
     }
 
     using iterator = HashTableIterator<K, V>;

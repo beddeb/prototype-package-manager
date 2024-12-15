@@ -14,10 +14,6 @@ public:
     explicit ISet(size_t initialCapacity = default_capacity) : table(initialCapacity) {}
 
     void add(const T& element) {
-//        if (table.contains(element)) {
-//            throw std::runtime_error("Element existed");
-//        }
-//        table.insert(element, nullptr);
         try {
             table.insert(element, nullptr);
         } catch (std::runtime_error& e) {
@@ -26,11 +22,6 @@ public:
     }
 
     void remove(const T& element) {
-//        if (table.contains(element)) {
-//            table.remove(element);
-//            return;
-//        }
-//        throw std::runtime_error("Element not found");
         try {
             table.remove(element);
         } catch (std::runtime_error& e) {
