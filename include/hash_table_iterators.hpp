@@ -6,20 +6,20 @@ class HashTable;
 template<typename K, typename V>
 class HashTableIterator {
 private:
-    HashTable<K, V>* hashTable;
-    size_t bucketIndex;
-    size_t nodeIndex;
+    HashTable<K, V>* hash_table;
+    size_t bucket_index;
+    size_t node_index;
 
     void findNextValid() {
-        while (bucketIndex < hashTable->capacity) {
-            while (nodeIndex < hashTable->table.get(bucketIndex).getSize()) {
-                if (hashTable->table.get(bucketIndex).get(nodeIndex).isOccupied) {
+        while (bucket_index < hash_table->capacity) {
+            while (node_index < hash_table->table.get(bucket_index).getSize()) {
+                if (hash_table->table.get(bucket_index).get(node_index).isOccupied) {
                     return;
                 }
-                ++nodeIndex;
+                ++node_index;
             }
-            ++bucketIndex;
-            nodeIndex = 0;
+            ++bucket_index;
+            node_index = 0;
         }
     }
 
@@ -31,22 +31,22 @@ public:
     using value_type = const K&;
 
     explicit HashTableIterator(HashTable<K, V>* table, size_t bucket = 0, size_t node = 0)
-            : hashTable(table), bucketIndex(bucket), nodeIndex(node) {
-        if (!hashTable) {
+            : hash_table(table), bucket_index(bucket), node_index(node) {
+        if (!hash_table) {
             throw std::runtime_error("HashTable is NULL");
         }
         findNextValid();
     }
 
     value_type operator*() const {
-        if (bucketIndex >= hashTable->capacity) {
+        if (bucket_index >= hash_table->capacity) {
             throw std::runtime_error("Iterator is out of range");
         }
-        return hashTable->table.get(bucketIndex).get(nodeIndex).key;
+        return hash_table->table.get(bucket_index).get(node_index).key;
     }
 
     HashTableIterator& operator++() {
-        ++nodeIndex;
+        ++node_index;
         findNextValid();
         return *this;
     }
@@ -58,9 +58,9 @@ public:
     }
 
     bool operator==(const HashTableIterator& other) const {
-        return hashTable == other.hashTable &&
-               bucketIndex == other.bucketIndex &&
-               nodeIndex == other.nodeIndex;
+        return hash_table == other.hash_table &&
+               bucket_index == other.bucket_index &&
+               node_index == other.node_index;
     }
 
     bool operator!=(const HashTableIterator& other) const {
@@ -71,20 +71,20 @@ public:
 template<typename K, typename V>
 class ConstHashTableIterator {
 private:
-    const HashTable<K, V>* hashTable;
-    size_t bucketIndex;
-    size_t nodeIndex;
+    const HashTable<K, V>* hash_table;
+    size_t bucket_index;
+    size_t node_index;
 
     void findNextValid() {
-        while (bucketIndex < hashTable->capacity) {
-            while (nodeIndex < hashTable->table.get(bucketIndex).getSize()) {
-                if (hashTable->table.get(bucketIndex).get(nodeIndex).isOccupied) {
+        while (bucket_index < hash_table->capacity) {
+            while (node_index < hash_table->table.get(bucket_index).getSize()) {
+                if (hash_table->table.get(bucket_index).get(node_index).isOccupied) {
                     return;
                 }
-                ++nodeIndex;
+                ++node_index;
             }
-            ++bucketIndex;
-            nodeIndex = 0;
+            ++bucket_index;
+            node_index = 0;
         }
     }
 
@@ -96,22 +96,22 @@ public:
     using value_type = const K&;
 
     explicit ConstHashTableIterator(const HashTable<K, V>* table, size_t bucket = 0, size_t node = 0)
-            : hashTable(table), bucketIndex(bucket), nodeIndex(node) {
-        if (!hashTable) {
+            : hash_table(table), bucket_index(bucket), node_index(node) {
+        if (!hash_table) {
             throw std::runtime_error("HashTable is NULL");
         }
         findNextValid();
     }
 
     value_type operator*() const {
-        if (bucketIndex >= hashTable->capacity) {
+        if (bucket_index >= hash_table->capacity) {
             throw std::runtime_error("Iterator is out of range");
         }
-        return hashTable->table.get(bucketIndex).get(nodeIndex).key;
+        return hash_table->table.get(bucket_index).get(node_index).key;
     }
 
     ConstHashTableIterator& operator++() {
-        ++nodeIndex;
+        ++node_index;
         findNextValid();
         return *this;
     }
@@ -123,9 +123,9 @@ public:
     }
 
     bool operator==(const ConstHashTableIterator& other) const {
-        return hashTable == other.hashTable &&
-               bucketIndex == other.bucketIndex &&
-               nodeIndex == other.nodeIndex;
+        return hash_table == other.hash_table &&
+               bucket_index == other.bucket_index &&
+               node_index == other.node_index;
     }
 
     bool operator!=(const ConstHashTableIterator& other) const {

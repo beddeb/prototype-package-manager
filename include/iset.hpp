@@ -9,7 +9,9 @@ private:
     HashTable<T, void*> table;
 
 public:
-    explicit ISet(size_t initialCapacity = 4) : table(initialCapacity) {}
+    static constexpr size_t default_capacity = 4; // capacity по умолчанию
+
+    explicit ISet(size_t initialCapacity = default_capacity) : table(initialCapacity) {}
 
     void add(const T& element) {
 //        if (table.contains(element)) {
@@ -19,7 +21,7 @@ public:
         try {
             table.insert(element, nullptr);
         } catch (std::runtime_error& e) {
-            throw e;
+            throw std::runtime_error("Error adding element: " + std::string(e.what()));
         }
     }
 
@@ -32,7 +34,7 @@ public:
         try {
             table.remove(element);
         } catch (std::runtime_error& e) {
-            throw e;
+            throw std::runtime_error("Error removing element: " + std::string(e.what()));
         }
     }
 

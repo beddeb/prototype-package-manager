@@ -25,6 +25,27 @@ void clearConsole() {
 #endif
 }
 
+template<typename T>
+bool readValue(std::stringstream &ss, T &value, const std::string &error_message) {
+    if (!(ss >> value)) {
+        std::cerr << error_message << "\n";
+        return false;
+    }
+    return true;
+}
+
+bool readAndValidatePackageData(std::stringstream &ss, std::string &packageName, int &major, int &minor, int &patch) {
+    if (!(ss >> packageName >> major >> minor >> patch)) {
+        std::cerr << "Error: Insufficient data. Package name and version are required.\n";
+        return false;
+    }
+
+    if (major <= 0 || minor < 0 || patch < 0) {
+        std::cerr << "Error: Invalid data format or version. Version must be positive.\n";
+        return false;
+    }
+    return true;
+}
 
 void processCommand(PackageManager &pm) {
     Sequence<DataSeries> plot_data;
@@ -39,15 +60,7 @@ void processCommand(PackageManager &pm) {
         int major, minor, patch;
         std::vector<std::string> dependencies;
 
-        if (!(ss >> packageName >> major >> minor >> patch)) {
-            std::cerr << "Error: Insufficient data. Package name and version are required.\n";
-            return;
-        }
-
-        if (major <= 0 || minor < 0 || patch < 0) {
-            std::cerr << "Error: Invalid data format or version. Version must be positive.\n";
-            return;
-        }
+        if (!readAndValidatePackageData(ss, packageName, major, minor, patch)) { return; }
 
         std::string dep;
         while (ss >> dep) {
@@ -69,15 +82,7 @@ void processCommand(PackageManager &pm) {
         std::string packageName;
         int major, minor, patch;
 
-        if (!(ss >> packageName >> major >> minor >> patch)) {
-            std::cerr << "Error: Insufficient data. Package name and version are required.\n";
-            return;
-        }
-
-        if (major <= 0 || minor < 0 || patch < 0) {
-            std::cerr << "Error: Invalid data format or version. Version must be positive.\n";
-            return;
-        }
+        if (!readAndValidatePackageData(ss, packageName, major, minor, patch)) { return; }
 
         Package pkg(packageName, Version(major, minor, patch));
         try {
@@ -117,102 +122,82 @@ void processCommand(PackageManager &pm) {
     } else if (command == "fpkgmn") {
         testPackageManager();
     } else if (command == "chseq") {
-        if (!(ss >> values)) {
-            std::cerr << "Error: Number of values is required.\n";
-            return;
-        }
+        if (!readValue(ss, values, "Error: Number of values is required.")) { return; }
         chronoSequence(values, 100);
     } else if (command == "chlistseq") {
-        if (!(ss >> values)) {
-            std::cerr << "Error: Number of values is required.\n";
-            return;
-        }
+        if (!readValue(ss, values, "Error: Number of values is required.")) { return; }
         chronoListSequence(values, 100);
     } else if (command == "charrseq") {
-        if (!(ss >> values)) {
-            std::cerr << "Error: Number of values is required.\n";
-            return;
-        }
+        if (!readValue(ss, values, "Error: Number of values is required.")) { return; }
         chronoArraySequence(values, 100);
     } else if (command == "chhasht") {
-        if (!(ss >> values)) {
-            std::cerr << "Error: Number of values is required.\n";
-            return;
-        }
+        if (!readValue(ss, values, "Error: Number of values is required.")) { return; }
         chronoHashTable(values);
     } else if (command == "chiset") {
-        if (!(ss >> values)) {
-            std::cerr << "Error: Number of values is required.\n";
-            return;
-        }
+        if (!readValue(ss, values, "Error: Number of values is required.")) { return; }
         chronoISet(values);
     } else if (command == "pseq") {
-        if (!(ss >> values)) {
-            std::cerr << "Error: Number of values is required.\n";
-            return;
-        }
+        if (!readValue(ss, values, "Error: Number of values is required.")) { return; }
+
         plot_data.add(DataSeries("Sequence", Color::Red));
         plot_data.add(DataSeries("std::vector", Color::Blue));
+
         plotInit<Sequence<int>, std::vector<int>>(values, plot_data);
     } else if (command == "plistseq") {
-        if (!(ss >> values)) {
-            std::cerr << "Error: Number of values is required.\n";
-            return;
-        }
+        if (!readValue(ss, values, "Error: Number of values is required.")) { return; }
+
         plot_data.add(DataSeries("ListSequence", Color::Red));
         plot_data.add(DataSeries("std::list", Color::Blue));
+
         plotInit<ListSequence<int>, std::list<int>>(values, plot_data);
     } else if (command == "parrseq") {
-        if (!(ss >> values)) {
-            std::cerr << "Error: Number of values is required.\n";
-            return;
-        }
+        if (!readValue(ss, values, "Error: Number of values is required.")) { return; }
+
         plot_data.add(DataSeries("ArraySequence", Color::Red));
         plot_data.add(DataSeries("std::vector", Color::Blue));
+
         plotInit<ArraySequence<int>, std::vector<int>>(values, plot_data);
     } else if (command == "phasht") {
-        if (!(ss >> values)) {
-            std::cerr << "Error: Number of values is required.\n";
-            return;
-        }
+        if (!readValue(ss, values, "Error: Number of values is required.")) { return; }
+
         plot_data.add(DataSeries("HashTable", Color::Red));
         plot_data.add(DataSeries("std::unordered_map", Color::Blue));
+
         plotInit<HashTable<int, int>, std::unordered_map<int, int>>(values, plot_data);
     } else if (command == "piset") {
-        if (!(ss >> values)) {
-            std::cerr << "Error: Number of values is required.\n";
-            return;
-        }
+        if (!readValue(ss, values, "Error: Number of values is required.")) { return; }
+
         plot_data.add(DataSeries("ISet", Color::Red));
         plot_data.add(DataSeries("std::set", Color::Blue));
+
         plotInit<ISet<int>, std::set<int>>(values, plot_data);
     } else if (command == "func") {
         std::cout << "Available function tests:\n"
-                  << "  Sequence        >fseq\n"
-                  << "  ListSequence    >flistseq\n"
-                  << "  ArraySequence   >farrseq\n"
-                  << "  HashTable       >fhasht\n"
-                  << "  ISet            >fiset\n"
-                  << "  Package Manager >fpkgmn\n";
+                  << "  fseq       ~ Sequence\n"
+                  << "  flistseq   ~ ListSequence\n"
+                  << "  farrseq    ~ ArraySequence\n"
+                  << "  fhasht     ~ HashTable\n"
+                  << "  fiset      ~ ISet\n"
+                  << "  fpkgmn     ~ Package Manager\n";
     } else if (command == "chrono") {
         std::cout << "Available chrono tests:\n"
-                  << "  Sequence vs std::vector      >chseq\n"
-                  << "  ListSequence std::list       >chlistseq\n"
-                  << "  ArraySequence vs std::vector >charrseq\n"
-                  << "  HashTable vs std::unordmap   >chhasht\n"
-                  << "  ISet vs std::set             >chiset\n";
+                  << "  chseq <value>       ~ Sequence vs std::vector\n"
+                  << "  chlistseq <value>   ~ ListSequence std::list\n"
+                  << "  charrseq <value>    ~ ArraySequence vs std::vector\n"
+                  << "  chhasht <value>     ~ HashTable vs std::unordmap\n"
+                  << "  chiset <value>      ~ ISet vs std::set\n";
     } else if (command == "plots") {
         std::cout << "Available comparative plots:\n"
-                  << "  Sequence vs std::vector      >pseq\n"
-                  << "  ListSequence vs std::list    >plistseq\n"
-                  << "  ArraySequence vs std::vector >parrseq\n"
-                  << "  HashTable vs std::unordmap   >phasht\n"
-                  << "  ISet vs std::set             >piset\n";
+                  << "  pseq <value>        ~ Sequence vs std::vector\n"
+                  << "  plistseq <value>    ~ ListSequence vs std::list\n"
+                  << "  parrseq <value>     ~ ArraySequence vs std::vector\n"
+                  << "  phasht <value>      ~ HashTable vs std::unordmap\n"
+                  << "  piset <value>       ~ ISet vs std::set\n";
     } else if (command == "admin") {
         std::cout << "Available commands:\n"
-                  << "  func\n"
-                  << "  chrono\n"
-                  << "  plots\n";
+                  << "  func       ~ Functional tests\n"
+                  << "  chrono     ~ Load chrono tests\n"
+                  << "  plots      ~ Plotting load tests\n";
     } else if (command == "exit") {
         pm.saveToFile("../data/pgk.txt"); // Save to file on exit
         throw std::runtime_error("exit");

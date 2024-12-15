@@ -4,15 +4,16 @@
 #include <utility>
 #include "sequence.hpp"
 
+
 template<typename T>
 class ArraySequence : public Sequence<T> {
 private:
-    T* data;
+    T *data;
 
 public:
     explicit ArraySequence(size_t size = 0) : Sequence<T>(size), data(new T[size]) {}
 
-    ArraySequence(const ArraySequence& other) : Sequence<T>(other.size), data(new T[other.capacity]) {
+    ArraySequence(const ArraySequence &other) : Sequence<T>(other.size), data(new T[other.capacity]) {
         for (size_t i = 0; i < other.size; ++i) {
             data[i] = other.data[i];
         }
@@ -20,7 +21,7 @@ public:
         Sequence<T>::capacity = other.capacity;
     }
 
-    ArraySequence(ArraySequence&& other) noexcept
+    ArraySequence(ArraySequence &&other) noexcept
             : Sequence<T>(other.size), data(other.data) {
         Sequence<T>::size = other.size;
         Sequence<T>::size = other.capacity;
@@ -33,10 +34,10 @@ public:
         delete[] data;
     }
 
-    void add(const T& element) override {
+    void add(const T &element) override {
         if (Sequence<T>::size == Sequence<T>::capacity) {
             Sequence<T>::resize();
-            T* newData = new T[Sequence<T>::capacity];
+            T *newData = new T[Sequence<T>::capacity];
             for (size_t i = 0; i < Sequence<T>::size; ++i) {
                 newData[i] = std::move(data[i]);
             }
@@ -56,21 +57,21 @@ public:
         --Sequence<T>::size;
     }
 
-    T& get(size_t index) override {
+    T &get(size_t index) override {
         if (index >= Sequence<T>::size) {
             throw std::out_of_range("Index out of range");
         }
         return data[index];
     }
 
-    const T& get(size_t index) const override {
+    const T &get(size_t index) const override {
         if (index >= Sequence<T>::size) {
             throw std::out_of_range("Index out of range");
         }
         return data[index];
     }
 
-    ArraySequence& operator=(const ArraySequence& other) {
+    ArraySequence &operator=(const ArraySequence &other) {
         if (this != &other) {
             delete[] data;
 
@@ -84,7 +85,7 @@ public:
         return *this;
     }
 
-    ArraySequence& operator=(ArraySequence&& other) noexcept {
+    ArraySequence &operator=(ArraySequence &&other) noexcept {
         if (this != &other) {
             delete[] data;
 
@@ -99,7 +100,7 @@ public:
         return *this;
     }
 
-    bool operator==(const ArraySequence& other) const {
+    bool operator==(const ArraySequence &other) const {
         if (this->size != other.size) {
             return false;
         }
@@ -112,7 +113,7 @@ public:
     }
 
     // Оператор неравенства
-    bool operator!=(const ArraySequence& other) const {
+    bool operator!=(const ArraySequence &other) const {
         return !(*this == other);
     }
 

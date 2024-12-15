@@ -39,7 +39,7 @@ void testRemoveNonexistentElementIS() {
     try {
         iset.remove(2);
         assert(("RemoveNonexistentElement_value", false));
-    } catch (const std::runtime_error&) {
+    } catch (const std::runtime_error &) {
         assert(("RemoveNonexistentElement_OK", true));
     }
 }

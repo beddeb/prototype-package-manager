@@ -8,13 +8,13 @@
 template<typename T>
 class Sequence {
 protected:
-    T* data;
+    T *data;
     size_t capacity;
     size_t size;
 
     void resize() {
         capacity = capacity ? capacity * 2 : 1;
-        T* newData = new T[capacity];
+        T *newData = new T[capacity];
         for (size_t i = 0; i < size; ++i) {
             newData[i] = std::move(data[i]);
         }
@@ -25,13 +25,13 @@ protected:
 public:
     explicit Sequence(size_t initialCapacity = 4) : data(new T[initialCapacity]), capacity(initialCapacity), size(0) {}
 
-    Sequence(const Sequence& other) : data(new T[other.capacity]), capacity(other.capacity), size(other.size) {
+    Sequence(const Sequence &other) : data(new T[other.capacity]), capacity(other.capacity), size(other.size) {
         for (size_t i = 0; i < size; ++i) {
             data[i] = other.data[i];
         }
     }
 
-    Sequence(Sequence&& other) noexcept : data(other.data), capacity(other.capacity), size(other.size) {
+    Sequence(Sequence &&other) noexcept: data(other.data), capacity(other.capacity), size(other.size) {
         other.data = nullptr;
         other.size = other.capacity = 0;
     }
@@ -40,7 +40,7 @@ public:
         delete[] data;
     }
 
-    virtual void add(const T& element) {
+    virtual void add(const T &element) {
         if (size == capacity) {
             resize();
         }
@@ -57,14 +57,14 @@ public:
         --size;
     }
 
-    virtual T& get(size_t index) {
+    virtual T &get(size_t index) {
         if (index >= size) {
             throw std::out_of_range("Index out of range");
         }
         return data[index];
     }
 
-    virtual const T& get(size_t index) const {
+    virtual const T &get(size_t index) const {
         if (index >= size) {
             throw std::out_of_range("Index out of range");
         }
@@ -75,7 +75,7 @@ public:
         return size;
     }
 
-    Sequence& operator=(const Sequence& other) {
+    Sequence &operator=(const Sequence &other) {
         if (this != &other) {
             Sequence tmp(other);
             *this = std::move(tmp);
@@ -83,7 +83,7 @@ public:
         return *this;
     }
 
-    Sequence& operator=(Sequence&& other) noexcept {
+    Sequence &operator=(Sequence &&other) noexcept {
         if (this != &other) {
             delete[] data;
             data = other.data;
@@ -95,26 +95,26 @@ public:
         return *this;
     }
 
-    T& operator[](size_t index) {
+    T &operator[](size_t index) {
         if (index >= size) {
             throw std::out_of_range("Index out of range");
         }
         return data[index];
     }
 
-    const T& operator[](size_t index) const {
+    const T &operator[](size_t index) const {
         if (index >= size) {
             throw std::out_of_range("Index out of range");
         }
         return data[index];
     }
 
-    Sequence& operator+=(const T& element) {
+    Sequence &operator+=(const T &element) {
         add(element);
         return *this;
     }
 
-    bool operator==(const Sequence& other) const {
+    bool operator==(const Sequence &other) const {
         if (size != other.size) return false;
         for (size_t i = 0; i < size; ++i) {
             if (data[i] != other.data[i]) return false;
@@ -122,7 +122,7 @@ public:
         return true;
     }
 
-    bool operator!=(const Sequence& other) const {
+    bool operator!=(const Sequence &other) const {
         return !(*this == other);
     }
 

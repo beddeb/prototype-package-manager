@@ -3763,13 +3763,13 @@
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
-      <name>P</name>
+      <name>compression_threshold</name>
       <anchorfile>classsf_1_1Keyboard.html</anchorfile>
       <anchor>acb4cacd7cc5802dec45724cf3314a142aaeac1db209a64a0221277a835de986e6</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
-      <name>Q</name>
+      <name>expansion_factor</name>
       <anchorfile>classsf_1_1Keyboard.html</anchorfile>
       <anchor>acb4cacd7cc5802dec45724cf3314a142a27e3d50587c9789d2592d275d22fbada</anchor>
       <arglist></arglist>
@@ -4423,13 +4423,13 @@
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
-      <name>P</name>
+      <name>compression_threshold</name>
       <anchorfile>classsf_1_1Keyboard.html</anchorfile>
       <anchor>acb4cacd7cc5802dec45724cf3314a142aaeac1db209a64a0221277a835de986e6</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
-      <name>Q</name>
+      <name>expansion_factor</name>
       <anchorfile>classsf_1_1Keyboard.html</anchorfile>
       <anchor>acb4cacd7cc5802dec45724cf3314a142a27e3d50587c9789d2592d275d22fbada</anchor>
       <arglist></arglist>
@@ -9088,13 +9088,13 @@
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
-      <name>P</name>
+      <name>compression_threshold</name>
       <anchorfile>structsf_1_1Keyboard_1_1Scan.html</anchorfile>
       <anchor>aa42fbf6954d6f81f7606e566c7abe875a0943cf62e03a8616a8a41b72539ded38</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
-      <name>Q</name>
+      <name>expansion_factor</name>
       <anchorfile>structsf_1_1Keyboard_1_1Scan.html</anchorfile>
       <anchor>aa42fbf6954d6f81f7606e566c7abe875af9b34314661202a2f73c2d71d95fcfeb</anchor>
       <arglist></arglist>
@@ -9976,13 +9976,13 @@
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
-      <name>P</name>
+      <name>compression_threshold</name>
       <anchorfile>structsf_1_1Keyboard_1_1Scan.html</anchorfile>
       <anchor>aa42fbf6954d6f81f7606e566c7abe875a0943cf62e03a8616a8a41b72539ded38</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
-      <name>Q</name>
+      <name>expansion_factor</name>
       <anchorfile>structsf_1_1Keyboard_1_1Scan.html</anchorfile>
       <anchor>aa42fbf6954d6f81f7606e566c7abe875af9b34314661202a2f73c2d71d95fcfeb</anchor>
       <arglist></arglist>

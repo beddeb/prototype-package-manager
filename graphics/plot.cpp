@@ -5,7 +5,7 @@
 #include "plot.hpp"
 
 
-template <typename Struct>
+template<typename Struct>
 std::vector<Dot> cppPlotCore(int values) {
     std::vector<Dot> datasort;
     Struct test_struct;
@@ -35,7 +35,7 @@ std::vector<Dot> cppPlotCore(int values) {
                 test_struct[values] = values;
             }
         } else {
-            for (const auto& value : data) {
+            for (const auto &value: data) {
                 test_struct.add(value);
             }
         }
@@ -51,7 +51,7 @@ std::vector<Dot> cppPlotCore(int values) {
 
 void plotLegend(sf::RenderWindow &window, sf::Font &font, const Sequence<DataSeries> &series) {
     std::vector<std::pair<std::string, sf::Color>> legends;
-    for (const auto& item : series){
+    for (const auto &item: series) {
         legends.emplace_back(item.title, item.color);
     }
 //    legends = {
@@ -95,7 +95,7 @@ void plotAxes(sf::RenderWindow &window, sf::Font &font, float padding) {
     window.draw(y_label);
 }
 
-template <typename TStruct, typename StdStruct>
+template<typename TStruct, typename StdStruct>
 void plotInit(int values, Sequence<DataSeries> &series) {
     series[0].data = cppPlotCore<TStruct>(values);
     series[1].data = cppPlotCore<StdStruct>(values);
@@ -216,7 +216,11 @@ void plotInit(int values, Sequence<DataSeries> &series) {
 }
 
 template void plotInit<Sequence<int>, std::vector<int>>(int values, Sequence<DataSeries> &series);
+
 template void plotInit<ListSequence<int>, std::list<int>>(int values, Sequence<DataSeries> &series);
+
 template void plotInit<ArraySequence<int>, std::vector<int>>(int values, Sequence<DataSeries> &series);
+
 template void plotInit<HashTable<int, int>, std::unordered_map<int, int>>(int values, Sequence<DataSeries> &series);
+
 template void plotInit<ISet<int>, std::set<int>>(int values, Sequence<DataSeries> &series);

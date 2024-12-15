@@ -2,7 +2,8 @@
 #include <iostream>
 #include "func_sequences.hpp"
 
-template <typename Container>
+
+template<typename Container>
 void testAddElement() {
     Container seq;
     seq.add(10);
@@ -10,7 +11,7 @@ void testAddElement() {
     assert(("AddElement_value", seq.get(0) == 10));
 }
 
-template <typename Container>
+template<typename Container>
 void testAddMultipleElements() {
     Container seq;
     seq.add(10);
@@ -22,7 +23,7 @@ void testAddMultipleElements() {
     assert(("AddMultipleElements_value_2", seq.get(2) == 30));
 }
 
-template <typename Container>
+template<typename Container>
 void testRemoveElement() {
     Container seq;
     seq.add(10);
@@ -34,7 +35,7 @@ void testRemoveElement() {
     assert(("RemoveElement_value_1", seq.get(1) == 30));
 }
 
-template <typename Container>
+template<typename Container>
 void testRemoveOutOfRange() {
     Container seq;
     seq.add(10);
@@ -42,24 +43,24 @@ void testRemoveOutOfRange() {
     try {
         seq.remove(2);
         assert(("RemoveOutOfRange_remove", false));
-    } catch (const std::out_of_range&) {
+    } catch (const std::out_of_range &) {
         assert(("RemoveOutOfRange_OK", true));
     }
 }
 
-template <typename Container>
+template<typename Container>
 void testGetOutOfRange() {
     Container seq;
     seq.add(10);
     try {
         seq.get(1);
         assert(("GetOutOfRange_value", false));
-    } catch (const std::out_of_range&) {
+    } catch (const std::out_of_range &) {
         assert(("GetOutOfRange_OK", true));
     }
 }
 
-template <typename Container>
+template<typename Container>
 void testCopyConstructor() {
     Container seq;
     seq.add(10);
@@ -70,7 +71,7 @@ void testCopyConstructor() {
     assert(("CopyConstructor_value_1", copy.get(1) == 20));
 }
 
-template <typename Container>
+template<typename Container>
 void testMoveConstructor() {
     Container seq;
     seq.add(10);
@@ -82,7 +83,7 @@ void testMoveConstructor() {
     assert(("MoveConstructor_size_1", seq.getSize() == 0));
 }
 
-template <typename Container>
+template<typename Container>
 void testAssignmentOperator() {
     Container seq;
     seq.add(10);
@@ -94,7 +95,7 @@ void testAssignmentOperator() {
     assert(("SelfAssignment_value_1", copy.get(1) == 20));
 }
 
-template <typename Container>
+template<typename Container>
 void testSelfAssignment() {
     Container seq;
     seq.add(10);
@@ -103,7 +104,7 @@ void testSelfAssignment() {
     assert(("SelfAssignment_value", seq.get(0) == 10));
 }
 
-template <typename Container>
+template<typename Container>
 void testEqualityOperator() {
     Container seq1;
     seq1.add(10);
@@ -116,7 +117,7 @@ void testEqualityOperator() {
     assert(("EqualityOperator", seq1 == seq2));
 }
 
-template <typename Container>
+template<typename Container>
 void testInequalityOperator() {
     Container seq1;
     seq1.add(10);
@@ -127,7 +128,7 @@ void testInequalityOperator() {
     assert(("InequalityOperator", seq1 != seq2));
 }
 
-template <typename Container>
+template<typename Container>
 void testResize() {
     Container seq;
     for (int i = 0; i < 10; ++i) {

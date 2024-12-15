@@ -17,7 +17,7 @@ struct Dot {
     int x;
     double y;
 
-    Dot& operator=(const Dot& other){
+    Dot &operator=(const Dot &other) {
         if (this != &other) {
             x = other.x;
             y = other.y;
@@ -33,13 +33,13 @@ struct DataSeries {
 
     DataSeries() : data(), title(), color() {}
 
-    DataSeries(const std::vector<Dot>& data, const std::string& title, const Color& color)
+    DataSeries(const std::vector<Dot> &data, const std::string &title, const Color &color)
             : data(data), title(title), color(color) {}
 
-    DataSeries(const std::string& title, const Color& color)
+    DataSeries(const std::string &title, const Color &color)
             : title(title), color(color) {}
 
-    DataSeries(const std::vector<Dot>& data, const Color& color)
+    DataSeries(const std::vector<Dot> &data, const Color &color)
             : data(data), color(color) {}
 };
 
@@ -49,5 +49,5 @@ void plotLegend(sf::RenderWindow &window, sf::Font &font, const Sequence<DataSer
 
 void plotAxes(sf::RenderWindow &window, sf::Font &font, float padding);
 
-template <typename TStruct, typename StdStruct>
+template<typename TStruct, typename StdStruct>
 void plotInit(int values, Sequence<DataSeries> &series);

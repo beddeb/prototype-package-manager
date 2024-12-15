@@ -38,7 +38,8 @@ void chronoInsertionTable(size_t elementCount) {
     }
     auto end = high_resolution_clock::now();
     auto duration = duration_cast<milliseconds>(end - start);
-    cout << "Insertion time for " << elementCount << " elements " << demangle(typeid(Container).name()) << ": " << duration.count() << " ms" << endl;
+    cout << "Insertion time for " << elementCount << " elements " << demangle(typeid(Container).name()) << ": "
+         << duration.count() << " ms" << endl;
 }
 
 template<typename K, typename V, typename Container>
@@ -78,17 +79,18 @@ void chronoGetTable(size_t elementCount) {
     }
     auto start = chrono::high_resolution_clock::now();
     if constexpr (is_same_v<Container, HashTable<K, V>>) {
-        for (const auto& key : keys) {
+        for (const auto &key: keys) {
             table.get(key);
         }
     } else {
-        for (const auto& key : keys) {
+        for (const auto &key: keys) {
             table.at(key);
         }
     }
     auto end = chrono::high_resolution_clock::now();
     auto duration = chrono::duration_cast<chrono::milliseconds>(end - start);
-    cout << "Get time for " << elementCount << " elements " << demangle(typeid(Container).name()) << ": " << duration.count() << " ms" << endl;
+    cout << "Get time for " << elementCount << " elements " << demangle(typeid(Container).name()) << ": "
+         << duration.count() << " ms" << endl;
 }
 
 template<typename K, typename V, typename Container>
@@ -128,17 +130,18 @@ void chronoRemovalTable(size_t elementCount) {
     }
     auto start = chrono::high_resolution_clock::now();
     if constexpr (is_same_v<Container, HashTable<K, V>>) {
-        for (const auto& key : keys) {
+        for (const auto &key: keys) {
             table.remove(key);
         }
     } else {
-        for (const auto& key : keys) {
+        for (const auto &key: keys) {
             table.erase(key);
         }
     }
     auto end = chrono::high_resolution_clock::now();
     auto duration = chrono::duration_cast<chrono::milliseconds>(end - start);
-    cout << "Removal time for " << elementCount << " elements " << demangle(typeid(Container).name()) << ": " << duration.count() << " ms" << endl;
+    cout << "Removal time for " << elementCount << " elements " << demangle(typeid(Container).name()) << ": "
+         << duration.count() << " ms" << endl;
 }
 
 

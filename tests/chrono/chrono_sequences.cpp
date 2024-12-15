@@ -5,7 +5,7 @@
 #include "chrono_sequences.hpp"
 #include "demangle.hpp"
 
-template <typename Container, typename T, typename Comparator>
+template<typename Container, typename T, typename Comparator>
 void chronoAddInt(size_t num_elements) {
     Container cont;
     Comparator comp;
@@ -30,7 +30,7 @@ void chronoAddInt(size_t num_elements) {
     std::cout << std::endl;
 }
 
-template <typename Container, typename T, typename Comparator>
+template<typename Container, typename T, typename Comparator>
 void chronoGetIndexInt(size_t num_elements, size_t step) {
     Container cont;
     Comparator comp;
@@ -62,12 +62,14 @@ void chronoGetIndexInt(size_t num_elements, size_t step) {
     auto duration_comp = std::chrono::duration_cast<std::chrono::nanoseconds>(end_comp - start_comp);
 
     std::cout << "Get element by index (average over " << step << " accesses):" << std::endl;
-    std::cout << "  " << demangle(typeid(Container).name()) << ": " << duration_cont.count() / step << " ns" << std::endl;
-    std::cout << "  " << demangle(typeid(Comparator).name()) << ": " << duration_comp.count() / step << " ns" << std::endl;
+    std::cout << "  " << demangle(typeid(Container).name()) << ": " << duration_cont.count() / step << " ns"
+              << std::endl;
+    std::cout << "  " << demangle(typeid(Comparator).name()) << ": " << duration_comp.count() / step << " ns"
+              << std::endl;
     std::cout << std::endl;
 }
 
-template <typename Container, typename T, typename Comparator>
+template<typename Container, typename T, typename Comparator>
 void chronoIterateInt(size_t num_elements) {
     Container cont;
     Comparator comp;
@@ -77,14 +79,14 @@ void chronoIterateInt(size_t num_elements) {
     }
 
     auto start_cont = std::chrono::high_resolution_clock::now();
-    for (T val : cont) {
+    for (T val: cont) {
         volatile T temp = val;
     }
     auto end_cont = std::chrono::high_resolution_clock::now();
     auto duration_cont = std::chrono::duration_cast<std::chrono::microseconds>(end_cont - start_cont);
 
     auto start_comp = std::chrono::high_resolution_clock::now();
-    for (T val : comp) {
+    for (T val: comp) {
         volatile T temp = val;
     }
     auto end_comp = std::chrono::high_resolution_clock::now();
@@ -96,7 +98,7 @@ void chronoIterateInt(size_t num_elements) {
     std::cout << std::endl;
 }
 
-template <typename Container, typename T, typename Comparator>
+template<typename Container, typename T, typename Comparator>
 void chronoRemoveInt(size_t num_elements) {
     Container cont;
     Comparator comp;
@@ -156,12 +158,16 @@ void chronoRemoveInt(size_t num_elements) {
 
     std::cout << "Remove " << num_elements / 2 << " elements:" << std::endl;
     std::cout << "  From the end:" << std::endl;
-    std::cout << "    " << demangle(typeid(Container).name()) << ": " << duration_cont_end.count() << " ms" << std::endl;
-    std::cout << "    " << demangle(typeid(Comparator).name()) << ": " << duration_comp_end.count() << " ms" << std::endl;
+    std::cout << "    " << demangle(typeid(Container).name()) << ": " << duration_cont_end.count() << " ms"
+              << std::endl;
+    std::cout << "    " << demangle(typeid(Comparator).name()) << ": " << duration_comp_end.count() << " ms"
+              << std::endl;
 
     std::cout << "  From the beginning:" << std::endl;
-    std::cout << "    " << demangle(typeid(Container).name()) << ": " << duration_cont_begin.count() << " ms" << std::endl;
-    std::cout << "    " << demangle(typeid(Comparator).name()) << ": " << duration_comp_begin.count() << " ms" << std::endl;
+    std::cout << "    " << demangle(typeid(Container).name()) << ": " << duration_cont_begin.count() << " ms"
+              << std::endl;
+    std::cout << "    " << demangle(typeid(Comparator).name()) << ": " << duration_comp_begin.count() << " ms"
+              << std::endl;
     std::cout << std::endl;
 }
 

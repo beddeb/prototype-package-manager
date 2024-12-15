@@ -34,20 +34,20 @@ void testInstallDuplicate() {
     try {
         pm.install(pkg1);
         assert(("InstallDuplicate_install", false));
-    } catch (const std::runtime_error& e) {
+    } catch (const std::runtime_error &e) {
         assert(("InstallDuplicate_OK", e.what()));
     }
 }
 
 void testInstallUnsatisfiedDependencies() {
     PackageManager pm;
-    Package pkg1("pkg1", Version(1,0,0));
-    Package pkg2("pkg2", Version(1,0,0));
+    Package pkg1("pkg1", Version(1, 0, 0));
+    Package pkg2("pkg2", Version(1, 0, 0));
     pkg1.dependencies.add("pkg2");
-    try{
+    try {
         pm.install(pkg1);
         assert(("InstallUnsatisfiedDependencies_install", false));
-    } catch (const std::runtime_error& e) {
+    } catch (const std::runtime_error &e) {
         assert(("InstallUnsatisfiedDependencies_OK", std::string(e.what()) == "Dependencies not satisfied"));
     }
 }
@@ -74,7 +74,7 @@ void testRemoveDependency() {
     try {
         pm.remove(pkg1);
         assert(("RemoveDependency_remove", false));
-    } catch (const std::runtime_error& e) {
+    } catch (const std::runtime_error &e) {
         assert(("RemoveDependency_OK", std::string(e.what()) == "Package is required by other packages"));
     }
 }
@@ -91,7 +91,7 @@ void testGetInstalledPackages() {
     PackageManager pm;
     Package pkg1("pkg1", Version(1, 0, 0));
     pm.install(pkg1);
-    const ISet<Package>& packages = pm.getInstalledPackages();
+    const ISet<Package> &packages = pm.getInstalledPackages();
     assert(("GetInstalledPackages_contains", packages.contains(pkg1)));
     assert(("GetInstalledPackages_size", packages.size() == 1));
 }
@@ -100,7 +100,7 @@ void testFindPackage() {
     PackageManager pm;
     Package pkg1("pkg1", Version(1, 0, 0));
     pm.install(pkg1);
-    Package* found = pm.findPackage("pkg1");
+    Package *found = pm.findPackage("pkg1");
     assert(("FindPackage_ptr", found != nullptr));
     assert(("FindPackage_pkg", *found == pkg1));
 

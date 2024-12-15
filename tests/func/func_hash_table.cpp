@@ -14,7 +14,7 @@ void testInsertAndGetHT() {
     try {
         table.get(3);
         assert(("InsertAndGet_value", false));
-    } catch (const std::runtime_error&) {
+    } catch (const std::runtime_error &) {
         assert(("InsertAndGet_OK", true));
     }
 }
@@ -28,7 +28,7 @@ void testRemoveHT() {
     try {
         table.get(1);
         assert(("Remove_value_0", false));
-    } catch (const std::runtime_error&) {
+    } catch (const std::runtime_error &) {
         assert(("Remove_OK", true));
     }
     assert(("Remove_value_1", table.get(2)) == "two");

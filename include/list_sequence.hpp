@@ -141,12 +141,12 @@ public:
         return *this;
     }
 
-    bool operator==(const ListSequence& other) const {
+    bool operator==(const ListSequence &other) const {
         if (this->getSize() != other.getSize()) {
             return false;
         }
-        Node* current1 = this->head;
-        Node* current2 = other.head;
+        Node *current1 = this->head;
+        Node *current2 = other.head;
 
         while (current1 && current2) {
             if (current1->data != current2->data) {
@@ -158,7 +158,7 @@ public:
         return true;
     }
 
-    bool operator!=(const ListSequence& other) const {
+    bool operator!=(const ListSequence &other) const {
         return !(*this == other);
     }
 

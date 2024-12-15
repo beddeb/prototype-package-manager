@@ -69,8 +69,8 @@ public:
         M,            //!< The M key
         N,            //!< The N key
         O,            //!< The O key
-        P,            //!< The P key
-        Q,            //!< The Q key
+        P,            //!< The compression_threshold key
+        Q,            //!< The expansion_factor key
         R,            //!< The R key
         S,            //!< The S key
         T,            //!< The T key
@@ -207,8 +207,8 @@ public:
             M,                  //!< Keyboard m and M key
             N,                  //!< Keyboard n and N key
             O,                  //!< Keyboard o and O key
-            P,                  //!< Keyboard p and P key
-            Q,                  //!< Keyboard q and Q key
+            P,                  //!< Keyboard p and compression_threshold key
+            Q,                  //!< Keyboard q and expansion_factor key
             R,                  //!< Keyboard r and R key
             S,                  //!< Keyboard s and S key
             T,                  //!< Keyboard t and T key
