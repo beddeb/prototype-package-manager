@@ -112,7 +112,6 @@ public:
         return true;
     }
 
-    // Оператор неравенства
     bool operator!=(const ArraySequence &other) const {
         return !(*this == other);
     }

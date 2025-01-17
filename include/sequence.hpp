@@ -75,6 +75,15 @@ public:
         return size;
     }
 
+    bool contains(const T &element) const {
+        for (size_t i = 0; i < size; ++i) {
+            if (data[i] == element) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     Sequence &operator=(const Sequence &other) {
         if (this != &other) {
             Sequence tmp(other);

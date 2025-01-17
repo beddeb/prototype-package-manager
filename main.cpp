@@ -15,6 +15,7 @@
 #include "tests/chrono/chrono_iset.hpp"
 
 #include "graphics/plot.hpp"
+#include "graphics/vis_dep.hpp"
 
 
 void clearConsole() {
@@ -193,6 +194,9 @@ void processCommand(PackageManager &pm) {
                   << "  parrseq <value>     ~ ArraySequence vs std::vector\n"
                   << "  phasht <value>      ~ HashTable vs std::unordmap\n"
                   << "  piset <value>       ~ ISet vs std::set\n";
+    } else if (command == "vis") {
+        DependencyVisualizer visualizer(pm);
+        visualizer.run();
     } else if (command == "admin") {
         std::cout << "Available commands:\n"
                   << "  func       ~ Functional tests\n"
@@ -209,6 +213,7 @@ void processCommand(PackageManager &pm) {
                   << "  show <package_name>\n"
                   << "  clear\n"
                   << "  help\n"
+                  << "  vis\n"
                   << "  admin\n"
                   << "  exit\n";
     } else {

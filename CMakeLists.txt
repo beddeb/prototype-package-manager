@@ -20,7 +20,8 @@ add_executable(lab3 main.cpp
         tests/chrono/string_generator.cpp
         tests/chrono/demangle.cpp
 
-        graphics/plot.cpp)
+        graphics/plot.cpp
+        graphics/vis_dep.cpp)
 
 set(SFML_DIR externallibs/sfml/sfmlx64win/SFML-2.6.1/lib/cmake/SFML)
 
